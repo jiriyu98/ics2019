@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
   // ui_mainloop(is_batch_mode);
 	
 	/* test expr() */
-	int ans, result;
+	uint32_t ans, result;
 	char buf[65536];
 	bool success;
 	FILE * fp = fopen("tools/gen-expr/input", "r");
