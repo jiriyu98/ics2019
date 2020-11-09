@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
 	bool success;
 	FILE * fp = fopen("tools/gen-expr/input", "r");
 	while(fscanf(fp, "%d %s", &ans, buf) != -1){
+		printf("ans: %d - exp: %s\n", ans, buf);
 		result = expr(buf, &success);
 		if(!success){
 			printf("Wrong expr");
