@@ -7,16 +7,7 @@ int init_monitor(int, char *[]);
 void ui_mainloop(int);
 
 uint32_t expr(char *e, bool *success);
-
-
-int main(int argc, char *argv[]) {
-  /* Initialize the monitor. */
-  int is_batch_mode = init_monitor(argc, argv);
-
-  /* Receive commands from user. */
-  // ui_mainloop(is_batch_mode);
-	
-	/* test expr() */
+static inline void test_expr(){
 	uint32_t ans, result;
 	char buf[65536];
 	bool success;
@@ -38,6 +29,18 @@ int main(int argc, char *argv[]) {
 		memset(buf, 0, sizeof(buf));
 	}
 	fclose(fp);
+}
+
+
+int main(int argc, char *argv[]) {
+  /* Initialize the monitor. */
+  int is_batch_mode = init_monitor(argc, argv);
+
+  /* Receive commands from user. */
+  // ui_mainloop(is_batch_mode);
+	
+	/* test expr() */
+	test_expr();
 
 
   return 0;
