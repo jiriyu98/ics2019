@@ -293,8 +293,7 @@ uint32_t eval(int p,int q, bool* success){
     if(*success==false){
     	return 0;
 		}
-    switch (tokens[op].type)
-    {
+    switch (tokens[op].type){
       case '+':
         return val1+val2;
       case '-':
@@ -302,8 +301,7 @@ uint32_t eval(int p,int q, bool* success){
       case '*':
         return val1*val2;
       case '/':
-        if(val2==0)
-        {
+        if(val2==0){
           printf("Divide by 0 !\n");
           *success=false;
           return 0;
