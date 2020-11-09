@@ -244,7 +244,6 @@ int check_parentheses(int p, int q){
     }
 		return 1;
   }
-	layer = 0;
 	for(int i=p; i<=q; i++){
     if(layer<0){
       return 0;
