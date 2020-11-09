@@ -267,9 +267,11 @@ uint32_t eval(int p,int q, bool* success){
     return calc(p, success);
   }
   int check = check_parentheses(p,q);
-  if(check!=0){
-    printf("Bad expression ! check_parenthese\n");
-    *success=false;
+  if(check!=-1){
+		if(check == 0){
+			printf("Bad expression ! check_parenthese\n");
+    	*success=false;
+		}
 		return eval(p+1,q-1,success);
   }
   else{
