@@ -9,7 +9,7 @@
 uint32_t isa_reg_str2val(const char *s, bool *success);
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NOTEQ, TK_DECIMAL, TK_OR, TK_LESSEQ, TK_GREATEREQ, TK_LESS, TK_GREATER, TK_HEXADECIMAL, TK_AND, TK_REG
+  TK_NOTYPE = 256, TK_EQ, TK_NOTEQ, TK_DECIMAL, TK_OR, TK_LESSEQ, TK_GREATEREQ, TK_LESS, TK_GREATER, TK_HEXADECIMAL, TK_AND, TK_REG, TK_DEREFERENCE, TK_POSNUM, TK_NEGNUM
 
   /* TODO: Add more token types */
 
@@ -336,6 +336,28 @@ uint32_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
+
+	for (i = 0; i < nr_token; i ++) {
+			if(i == 0 || (tokens[i - 1].type != TK_REG || tokens[i - 1].type != TK_DECIMAL || tokens[i - 1].type != TK_HEXADECIMAL || tokens[i - 1].type != ')'){
+				switch(tokens[i].type){
+					case '*': tokens[i].type = TK_DEREFERENCE; break;
+					/*
+					case '+': tokens[i].type = TK_POSNUM;
+					case '-': 
+						if()
+						tokens[i].type = TK_NEGNUM;
+					*/
+				}
+			}
+		}
+	}
+
+/*
+	for (i = 0; i < nr_token; i ++) {
+		if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_REG || tokens[i - 1].type != TK_DECIMAL || tokens[i - 1].type != TK_HEXADECIMAL || tokens[i - 1].type != ')')) ) {
+		  tokens[i].type = TK_DEREFERENCE;
+		}
+*/
 	*success = true;
   return eval(0, nr_token-1, success);
 }
