@@ -9,6 +9,9 @@
 
 void cpu_exec(uint64_t);
 
+void isa_reg_display();
+void watchpoints_display();
+
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -37,6 +40,12 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
+static int cmd_si(char *args);
+static int cmd_info(char *args);
+static int cmd_exp(char *args);
+static int cmd_scan(char *args);
+static int cmd_setWatchPoints(char *args);
+static int cmd_deleteWatchPoints(char *args);
 
 static struct {
   char *name;
@@ -48,7 +57,12 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
-
+	{ "si", "si [N] - run N steps and stop", cmd_si },
+	{ "info", "info SUBCMD - print reg state & watchpoint info", cmd_info},
+	{ "p", "p EXPR - get expression value", cmd_exp},
+	{ "x", "x N EXPR - get expression value and set it as start memory address, then output N characters consequently", cmd_scan},
+	{ "w", "w EXPR - setWatchPoint", cmd_setWatchPoints},
+	{ "d", "d N - deleteWatchPoint", cmd_deleteWatchPoints}
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -75,6 +89,62 @@ static int cmd_help(char *args) {
   }
   return 0;
 }
+
+static int cmd_si(char *args){
+	char *arg = strtok(NULL, " ");
+
+	if (arg == NULL){
+		cpu_exec(1);
+	}else{
+		int n = 0;
+		for (int i=0; i<strlen(args); i++){
+			n = args[i] + n * 10;
+		}
+		cpu_exec(n);
+	}
+	return 0;
+}
+
+static int cmd_info(char *args){
+	char *arg = strtok(NULL, " ");
+	int i;
+
+	if(arg == NULL){
+		return 0;
+	}else if(strcmp(arg, "r") == 0){
+		isa_reg_display();
+	}else if(strcmp(arg, "w") == 0){
+		watchpoints_display();
+	}
+	return 0;
+}
+
+static int cmd_exp(char *args){
+	bool success = true;
+	uint32_t result = expr(args, &success);
+	if(success){
+    printf("\033[0;32m %s = %d(%#x) \033[0m;\n",args,result,result);
+	}
+  return 0;
+}
+
+static int cmd_setWatchPoints(char *args){
+	return 0;
+}
+
+static int cmd_deleteWatchPoints(char *args){
+	return 0;
+}
+
+static int cmd_scan(char *args){
+	bool success = true;
+	uint32_t result = expr(args, &success);
+	if(success){
+    printf("\033[0;32m %s = %d(%#x) \033[0m;\n",args,result,result);
+	}
+  return 0;
+}
+
 
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
