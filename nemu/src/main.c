@@ -10,13 +10,13 @@ uint32_t expr(char *e, bool *success);
 static inline void test_expr(){
 	uint32_t ans, result;
 	char buf[65536];
-	bool *success=true;
+	bool success;
 	FILE * fp = fopen("tools/gen-expr/input", "r");
 	while(fscanf(fp, "%d", &ans) != -1 && fscanf(fp, "%[^\n]", buf) != -1){
 		printf("ans: %u - exp: %s\n", ans, buf);
-		result = expr(buf, success);
+		result = expr(buf, &success);
 		printf("result: %u\n", result);
-		if(!*success){
+		if(!success){
 			printf("Wrong expr\n");
 		}else{
 			if(result == ans){
