@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 	char buf[65536];
 	bool success;
 	FILE * fp = fopen("tools/gen-expr/input", "r");
-	while(fscanf(fp, "%d %s", &ans, buf) != -1){
+	while(fscanf(fp, "%d %s", &ans, buf) == 2){
 		printf("ans: %d - exp: %s\n", ans, buf);
 		result = expr(buf, &success);
 		if(!success){
@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) {
 		result = 0;
 		memset(buf, 0, sizeof(buf));
 	}
+	fclose(fp);
 
 
   return 0;
