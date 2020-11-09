@@ -15,7 +15,7 @@ static inline void test_expr(){
 	while(fscanf(fp, "%d", &ans) != -1 && fscanf(fp, "%[^\n]", buf) != -1){
 		printf("ans: %u - exp: %s\n", ans, buf);
 		result = expr(buf, &success);
-		printf("result: %u", result);
+		printf("result: %u\n", result);
 		if(!success){
 			printf("Wrong expr\n");
 		}else{
