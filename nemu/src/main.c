@@ -25,12 +25,12 @@ int main(int argc, char *argv[]) {
 		printf("ans: %d - exp: %s\n", ans, buf);
 		result = expr(buf, &success);
 		if(!success){
-			printf("Wrong expr");
+			printf("Wrong expr\n");
 		}else{
 			if(result == ans){
-				printf("True! Cong!");
+				printf("True! Cong!\n");
 			}else{
-				printf("False! Please debug!");
+				printf("False! Please debug!\n");
 				break;
 			}
 		}
