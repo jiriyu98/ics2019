@@ -226,18 +226,15 @@ uint32_t calc(int pos, bool* success){
   return total;
 }
 
-int check_parentheses(int p, int q)
-{
-  int result = 0;
+// result case: 1-> (exp), 0 -> wrong exp, -1 -> exp
+
+int check_parentheses(int p, int q){
   int layer = 0;
-  if(tokens[p].type=='(' && tokens[q].type==')')
-  {
-    result=1;
+  if(tokens[p].type=='(' && tokens[q].type==')'){
     for(int i=p+1;i<=q-1;++i)
     {
-      if(layer<0)
-      {
-        result=0;
+      if(layer<0){
+        return 0;
       }
       if(tokens[i].type == '('){
 				layer++;
@@ -246,37 +243,36 @@ int check_parentheses(int p, int q)
 				layer--;
 			}
     }
+		return 1;
   }
-  return result;
+	if(layer == 0){
+		return -1;
+	}else{
+		return 0;
+	}
 }
 
 uint32_t eval(int p,int q, bool* success){
-	if (p>q)
-  {
+	if (p>q){
       printf ("Bad expression. p>q \n");
       *success=false;
       return 0;
   }
-  else if (p==q)
-  {
-    if (tokens[p].type!=TK_DECIMAL && tokens[p].type!=TK_HEXADECIMAL && tokens[p].type!=TK_REG)
-    {
+  else if (p==q){
+    if (tokens[p].type!=TK_DECIMAL && tokens[p].type!=TK_HEXADECIMAL && tokens[p].type!=TK_REG){
       printf ("Bad expression. Single token is wrong. \n");
       *success=false;
       return 0;
     }
-    
     return calc(p, success);
   }
   int check = check_parentheses(p,q);
-  if(check!=0)
-  {
+  if(check!=0){
     printf("Bad expression ! check_parenthese\n");
     *success=false;
 		return eval(p+1,q-1,success);
   }
-  else
-  {
+  else{
     uint32_t op = findMainOp(p, q, success);
     if(*success==false){
     	return 0;
@@ -335,5 +331,5 @@ uint32_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
 
-  return eval(0,nr_token-1,success);
+  return eval(0, nr_token-1, success);
 }
