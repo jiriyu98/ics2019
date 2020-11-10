@@ -267,7 +267,7 @@ int check_parentheses(int p, int q){
 	return result;
 }
 
-uint32_t eval(int p,int q, bool* success){
+uint32_t eval(int p, int q, bool* success){
 	if (p>q){
       printf ("Bad expression. p>q \n");
       *success=false;
@@ -302,7 +302,6 @@ uint32_t eval(int p,int q, bool* success){
     if(*success==false){
     	return 0;
 		}
-		printf("p=%d, q=%d", p, q);
     uint32_t val2 = eval(op+1, q, success);
     if(*success==false){
     	return 0;
@@ -373,12 +372,6 @@ uint32_t expr(char *e, bool *success) {
 		}
 	}
 
-/*
-	for (int i = 0; i < nr_token; i ++) {
-		if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_REG || tokens[i - 1].type != TK_DECIMAL || tokens[i - 1].type != TK_HEXADECIMAL || tokens[i - 1].type != ')')) ) {
-		  tokens[i].type = TK_DEREFERENCE;
-		}
-*/
 	*success = true;
   return eval(0, nr_token-1, success);
 }
