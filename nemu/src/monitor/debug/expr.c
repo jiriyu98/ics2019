@@ -193,7 +193,7 @@ int calc(int pos, bool* success){
 	int total = 0;
   int i=0;
   if(tokens[pos].type!=TK_REG){
-    bool isDecimal = tokens[pos].type==(TK_DECIMAL||TK_NEGDECIMAL) ? true:false;
+    bool isDecimal = (tokens[pos].type==TK_DECIMAL|| tokens[pos].type==TK_NEGDECIMAL) ? true:false;
     while(tokens[pos].str[i]!='\0')
     {
       if(isDecimal)
@@ -223,7 +223,7 @@ int calc(int pos, bool* success){
   }
   else
     total=isa_reg_str2val(&tokens[pos].str[1],success);
-	if(TK_NEGDECIMAL || TK_NEGHEXADECIMAL){
+	if(tokens[pos].type == TK_NEGDECIMAL || tokens[pos].type == TK_NEGHEXADECIMAL){
 		total *= -1;
 	}
 	printf("the calc result is: %u", total);
