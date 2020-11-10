@@ -229,13 +229,27 @@ uint32_t calc(int pos, bool* success){
 // result case: 1-> (exp), 0 -> wrong exp, -1 -> exp
 
 int check_parentheses(int p, int q){
+	int result = 0;
   int layer = 0;
   if(tokens[p].type=='(' && tokens[q].type==')'){
-		return 1;
+		result = 1;
+    for(int i=p+1; i<=q-1; i++){
+      if(layer < 0){
+        result = -2; // 0 or -1
+      }
+      if(tokens[i].type == '('){
+				layer++;
+			}
+			if(tokens[i].type == ')'){
+				layer--;
+			}
+    }
   }
+	layer = 0;
 	for(int i=p; i<=q; i++){
-    if(layer<0){
-      return 0;
+    if(layer < 0){
+      result = 0;
+			return result;
     }
     if(tokens[i].type == '('){
 			layer++;
@@ -245,9 +259,11 @@ int check_parentheses(int p, int q){
 		}
   }
 	if(layer == 0){
-		return -1;
+		result = -1;
+	}else{
+		result = 0;
 	}
-	return 0;
+	return result;
 }
 
 uint32_t eval(int p,int q, bool* success){
