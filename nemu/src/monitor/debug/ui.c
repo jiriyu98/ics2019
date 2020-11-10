@@ -157,6 +157,7 @@ static int cmd_deleteWatchPoints(char *args){
 	if(!success){
 		printf("exp wrong!\n");
 	}
+	n = 2;
 	free_wp(n);
 	return 0;
 }
