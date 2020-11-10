@@ -152,9 +152,9 @@ static int cmd_deleteWatchPoints(char *args){
 	if(arg == NULL){
 		return 0;
 	}
-	bool success = true;
 	int n;
 	/*
+	bool success = true;
 	n = expr(arg, &success);
 	if(!success){
 		printf("exp wrong!\n");
