@@ -51,9 +51,11 @@ WP* new_wp(char *exp){
 }
 
 void free_wp(int NO){
+		printf("what1?\n");
 	if(head == NULL || NO <0 || NO >31){
 		return;
 	}
+		printf("wha2t?\n");
 	if(NO == head->NO){
 		WP* temp = head;
 		head = head->next;
