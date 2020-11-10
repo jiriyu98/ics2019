@@ -225,7 +225,7 @@ int calc(int pos, bool* success){
     }
   }
   else
-    total=isa_reg_str2val(&tokens[pos].str[1],success);
+    total=isa_reg_str2val(tokens[pos].str,success);
   return total;
 }
 
