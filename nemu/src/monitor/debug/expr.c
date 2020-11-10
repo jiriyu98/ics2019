@@ -284,6 +284,7 @@ uint32_t eval(int p,int q, bool* success){
 		if(check == 0){
 			printf("Bad expression ! check_parenthese\n");
     	*success=false;
+			return 0;
 		}
 		return eval(p+1, q-1, success);
   }
