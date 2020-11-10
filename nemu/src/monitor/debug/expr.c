@@ -307,7 +307,6 @@ uint32_t eval(int p,int q, bool* success){
       case '-':
         return val1-val2;
       case '*':
-				printf("val1:%u * val2:%u\n", val1, val2);
         return val1*val2;
       case '/':
         if(val2==0){
@@ -315,6 +314,7 @@ uint32_t eval(int p,int q, bool* success){
           *success=false;
           return 0;
         }
+				printf("val1:%u / val2:%u\n", val1, val2);
         return val1/val2;
       case TK_EQ :
         return val1==val2;
