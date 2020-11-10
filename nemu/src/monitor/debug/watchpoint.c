@@ -51,7 +51,7 @@ WP* new_wp(char *exp){
 }
 
 void free_wp(int NO){
-	printf("%s\n", NO);
+	printf("%d\n", NO);
 	if(head == NULL || NO < 0 || NO >31){
 		return;
 	}
