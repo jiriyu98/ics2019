@@ -51,7 +51,7 @@ WP* new_wp(char *exp){
 }
 
 void free_wp(int NO){
-	if(head == NULL || NO <0 || NO >=31){
+	if(head == NULL || NO <0 || NO >31){
 		return;
 	}
 	if(NO == head->NO){
@@ -63,6 +63,7 @@ void free_wp(int NO){
 	}
 	
 	WP *front=head, *temp=head->next;
+	printf("what?\n");
 	while(temp!=NULL){
 		if(NO == temp->NO){
 			front->next = temp->next;
@@ -83,7 +84,6 @@ bool check_watchpoints(){
 		uint32_t newValue = expr(node->exp, &success);
 			if(!success){
 				assert(0);
-				//Assert(0,"\033[0;31mThe watchpoints expression got some touble.\n\033[0m");
 			}
 			if(newValue!=node->old_value){
 				  printf("\033[0;33m");
