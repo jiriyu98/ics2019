@@ -142,7 +142,7 @@ static int cmd_setWatchPoints(char *args){
 	if(!true){
 		return -1;
 	}
-	printf("NO.%d watchpoint is setted.", wp->NO);
+	printf("NO.%d watchpoint is setted.\n", wp->NO);
 	return 0;
 }
 
