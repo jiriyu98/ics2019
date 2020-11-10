@@ -9,7 +9,7 @@
 uint32_t isa_reg_str2val(const char *s, bool *success);
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NOTEQ, TK_DECIMAL, TK_OR, TK_LESSEQ, TK_GREATEREQ, TK_LESS, TK_GREATER, TK_HEXADECIMAL, TK_AND, TK_REG, TK_DEREFERENCE, TK_NEGDECIMAL, TK_NEGHEXADECIMAL
+  TK_NOTYPE = 256, TK_EQ, TK_NOTEQ, TK_DECIMAL, TK_OR, TK_LESSEQ, TK_GREATEREQ, TK_LESS, TK_GREATER, TK_HEXADECIMAL, TK_AND, TK_REG, TK_DEREFERENCE, TK_POSNUM, TK_NEGNUM
 
   /* TODO: Add more token types */
 
@@ -133,6 +133,8 @@ int op_precedence(int type)
 {
   switch(type)
   {
+		case TK_NEGNUM:
+		case TK_POSNUM: return 1;
 		case TK_DEREFERENCE: return 2;
     case '*': 
 		case '/': return 3;
@@ -193,7 +195,7 @@ int calc(int pos, bool* success){
 	int total = 0;
   int i=0;
   if(tokens[pos].type!=TK_REG){
-    bool isDecimal = (tokens[pos].type==TK_DECIMAL|| tokens[pos].type==TK_NEGDECIMAL) ? true:false;
+    bool isDecimal = tokens[pos].type==TK_DECIMAL ? true:false;
     while(tokens[pos].str[i]!='\0')
     {
       if(isDecimal)
@@ -223,10 +225,6 @@ int calc(int pos, bool* success){
   }
   else
     total=isa_reg_str2val(&tokens[pos].str[1],success);
-	if(tokens[pos].type == TK_NEGDECIMAL || tokens[pos].type == TK_NEGHEXADECIMAL){
-		total *= -1;
-	}
-	printf("the calc result is: %u", total);
   return total;
 }
 
@@ -297,7 +295,10 @@ uint32_t eval(int p,int q, bool* success){
     if(*success==false){
     	return 0;
 		}
-    uint32_t val1 = eval(p, op-1, success);
+		uint32_t val1 = 0;
+		if(op != TK_DEREFERENCE && op != TK_NEGNUM && op != TK_POSNUM){
+			val1 = eval(p, op-1, success);
+		}
     if(*success==false){
     	return 0;
 		}
@@ -306,6 +307,9 @@ uint32_t eval(int p,int q, bool* success){
     	return 0;
 		}
     switch (tokens[op].type){
+			case TK_DEREFERENCE: return vaddr_read(val2,4);
+			case TK_NEGNUM: return eval(op+1, q, success);
+			case TK_POSNUM: return -eval(op+1, q, success);
       case '+':
         return val1+val2;
       case '-':
@@ -352,7 +356,7 @@ uint32_t expr(char *e, bool *success) {
 
 	/* DEREFERENCE TOKEN TYPE*/
 	for (int i = 0; i < nr_token; i ++) {
-		if(i == 0 || (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL && tokens[i - 1].type != TK_NEGDECIMAL && tokens[i - 1].type != TK_HEXADECIMAL && tokens[i - 1].type != TK_NEGHEXADECIMAL && tokens[i - 1].type != ')')){
+		if(i == 0 || (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL && tokens[i - 1].type != TK_HEXADECIMAL && tokens[i - 1].type != ')' && tokens[i - 1].type != TK_POSNUM && tokens[i - 1].type != TK_NEGNUM)){
 			if(tokens[i].type == '*'){
 				tokens[i].type = TK_DEREFERENCE;
 			}
@@ -360,25 +364,10 @@ uint32_t expr(char *e, bool *success) {
 	}
 	/* NEG OR POS NUMBER TYPE */
 	for (int i = 0; i < nr_token; i ++) {
-		if(i == 0 || (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL && tokens[i - 1].type != TK_NEGDECIMAL && tokens[i - 1].type != TK_HEXADECIMAL && tokens[i - 1].type != TK_NEGHEXADECIMAL && tokens[i - 1].type != ')' && tokens[i - 1].type != TK_DEREFERENCE)){
+		if(i == 0 || (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL && tokens[i - 1].type != TK_HEXADECIMAL && tokens[i - 1].type != ')' && tokens[i - 1].type != TK_DEREFERENCE && tokens[i - 1].type != TK_POSNUM && tokens[i - 1].type != TK_NEGNUM)){
 			switch(tokens[i].type){
-				case '+': break;
-				case '-':
-					if(i+1 >= nr_token){
-						*success = false;
-						printf("NEG or POS SYMBLO is wrong.\n");
-						return 0;
-					}
-					if(tokens[i+1].type == TK_HEXADECIMAL){
-						tokens[i+1].type == TK_NEGHEXADECIMAL;
-					}else if(tokens[i+1].type == TK_DECIMAL){
-						tokens[i+1].type == TK_NEGDECIMAL;
-					}else{
-						*success = false;
-						printf("NEG or POS SYMBLO is wrong.\n");
-						return 0;
-					}
-					break;
+				case '+': tokens[i].type == TK_POSNUM; break;
+				case '-': tokens[i].type == TK_NEGNUM; break;
 			}
 		}
 	}
