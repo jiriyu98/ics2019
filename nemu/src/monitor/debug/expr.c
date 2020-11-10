@@ -154,7 +154,6 @@ uint32_t findMainOp(int p, int q, bool* success){
 	int layer = 0;
 	int precedence = 0;
 	for(int i=p; i<=q; i++){
-		printf("layer:%d", layer);
 		if(layer==0){
 		  int type = tokens[i].type;
 		  if(type=='('){
@@ -181,6 +180,7 @@ uint32_t findMainOp(int p, int q, bool* success){
 			}
 		}
 	}
+	printf("precedence:%d", precedence);
 	if(layer!=0||precedence==0)
 	{
 		printf("Bad expression at [%d %d]\n",p,q);
