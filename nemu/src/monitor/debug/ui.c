@@ -119,9 +119,11 @@ static int cmd_info(char *args){
 }
 
 static int cmd_exp(char *args){
-	char *arg = strtok(NULL, " ");
+	if(args == NULL){
+		return 0;
+	}
 	bool success = true;
-	uint32_t result = expr(arg, &success);
+	uint32_t result = expr(args, &success);
 	if(success){
     printf("\033[0;32m %s = %d(%#x) \033[0m;\n",args,result,result);
 	}
@@ -133,8 +135,6 @@ static int cmd_setWatchPoints(char *args){
 		return 0;
 	}
 	printf("%s", args);
-
-	printf("Now is setting watchpoint");
 	WP* wp = new_wp();
 	strcpy(wp->exp, args);
 	bool success = true;
