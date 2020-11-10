@@ -51,11 +51,10 @@ WP* new_wp(char *exp){
 }
 
 void free_wp(int NO){
-		printf("what1?\n");
-	if(head == NULL || NO <0 || NO >31){
+	printf("what? %d\n", NO);
+	if(head == NULL || NO < 0 || NO >31){
 		return;
 	}
-		printf("wha2t?\n");
 	if(NO == head->NO){
 		WP* temp = head;
 		head = head->next;
@@ -65,7 +64,6 @@ void free_wp(int NO){
 	}
 	
 	WP *front=head, *temp=head->next;
-	printf("what?\n");
 	while(temp!=NULL){
 		if(NO == temp->NO){
 			front->next = temp->next;
