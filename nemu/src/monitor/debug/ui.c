@@ -132,6 +132,7 @@ static int cmd_setWatchPoints(char *args){
 	if(args == NULL){
 		return 0;
 	}
+	printf("%s", args);
 
 	printf("Now is setting watchpoint");
 	WP* wp = new_wp();
