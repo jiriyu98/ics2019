@@ -226,6 +226,7 @@ int calc(int pos, bool* success){
 	if(TK_NEGDECIMAL || TK_NEGHEXADECIMAL){
 		total *= -1;
 	}
+	printf("the calc result is: %u", total);
   return total;
 }
 
