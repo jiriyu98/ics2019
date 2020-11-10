@@ -101,8 +101,6 @@ static bool make_token(char *e) {
 						break;
 					case TK_DECIMAL:
 					case TK_HEXADECIMAL:
-					case TK_NEGDECIMAL:
-					case TK_NEGHEXADECIMAL:
 					case TK_REG:
 						tokens[nr_token].type = rules[i].token_type;
 						if(substr_len>=32){
@@ -364,7 +362,7 @@ uint32_t expr(char *e, bool *success) {
 		if(i == 0 || (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL && tokens[i - 1].type != TK_NEGDECIMAL && tokens[i - 1].type != TK_HEXADECIMAL && tokens[i - 1].type != TK_NEGHEXADECIMAL && tokens[i - 1].type != ')' && tokens[i - 1].type != TK_DEREFERENCE)){
 			switch(tokens[i].type){
 				case '+': break;
-				case '-': 
+				case '-':
 					if(i+1 >= nr_token){
 						*success = false;
 						printf("NEG or POS SYMBLO is wrong.\n");
@@ -379,6 +377,7 @@ uint32_t expr(char *e, bool *success) {
 						printf("NEG or POS SYMBLO is wrong.\n");
 						return 0;
 					}
+					break;
 			}
 		}
 	}
