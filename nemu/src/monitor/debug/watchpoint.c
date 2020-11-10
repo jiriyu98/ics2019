@@ -55,7 +55,7 @@ WP* new_wp(char *exp){
 }
 
 void free_wp(int NO){
-	if(NO == NULL || head == NULL || NO <0 || NO >=31){
+	if(head == NULL || NO <0 || NO >=31){
 		return;
 	}
 	if(NO == head->NO){
