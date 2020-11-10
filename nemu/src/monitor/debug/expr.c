@@ -262,6 +262,7 @@ int check_parentheses(int p, int q){
 	if(layer != 0){
 		return 0;
 	}
+	printf("layer:%d\n", layer);
 	return result;
 }
 
