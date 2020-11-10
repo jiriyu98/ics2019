@@ -18,6 +18,7 @@ static inline void test_expr(){
 		printf("result: %u\n", result);
 		if(!success){
 			printf("Wrong expr\n");
+			break;
 		}else{
 			if(result == ans){
 				printf("True! Cong!\n");
