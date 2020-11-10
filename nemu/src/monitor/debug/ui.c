@@ -152,12 +152,11 @@ static int cmd_deleteWatchPoints(char *args){
 	if(arg == NULL){
 		return 0;
 	}
-	printf("%s\n", args);
-	int n = 0;
-	for (int i=0; i<strlen(args); i++){
-		n = args[i] + n * 10;
+	bool success = true;
+	int n = expr(arg, &success);
+	if(!success){
+		printf("exp wrong!\n");
 	}
-		printf("%s\n", args);
 	free_wp(n);
 	return 0;
 }
