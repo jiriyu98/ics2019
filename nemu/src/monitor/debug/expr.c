@@ -133,6 +133,7 @@ int op_precedence(int type)
 {
   switch(type)
   {
+		case TK_DEREFERENCE: return 2;
     case '*': 
 		case '/': return 3;
     case '+': 
@@ -180,7 +181,6 @@ uint32_t findMainOp(int p, int q, bool* success){
 			}
 		}
 	}
-	printf("precedence:%d", precedence);
 	if(layer!=0||precedence==0)
 	{
 		printf("Bad expression at [%d %d]\n",p,q);
@@ -338,7 +338,7 @@ uint32_t expr(char *e, bool *success) {
   // TODO();
 
 	for (int i = 0; i < nr_token; i ++) {
-		if(i == 0 || (tokens[i - 1].type != TK_REG || tokens[i - 1].type != TK_DECIMAL || tokens[i - 1].type != TK_HEXADECIMAL || tokens[i - 1].type != ')')){
+		if(i == 0 || (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL && tokens[i - 1].type != TK_HEXADECIMAL && tokens[i - 1].type != ')')){
 			switch(tokens[i].type){
 				case '*': tokens[i].type = TK_DEREFERENCE; break;
 				/*
