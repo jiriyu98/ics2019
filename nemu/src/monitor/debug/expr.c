@@ -161,7 +161,7 @@ uint32_t findMainOp(int p, int q, bool* success){
 				continue;
 			}
 			if(type==')'){
-				printf("Bad expression at [%d %d]\n",p,q);
+				printf("1Bad expression at [%d %d]\n",p,q);
 				*success = false;
 				return 0;
 			}
@@ -183,7 +183,7 @@ uint32_t findMainOp(int p, int q, bool* success){
 	}
 	if(layer!=0||precedence==0)
 	{
-		printf("Bad expression at [%d %d]\n",p,q);
+		printf("2Bad expression at [%d %d]\n",p,q);
 		*success = false;
 	}
 	return op;
@@ -278,7 +278,7 @@ uint32_t eval(int p,int q, bool* success){
 			printf("Bad expression ! check_parenthese\n");
     	*success=false;
 		}
-		return eval(p+1,q-1,success);
+		return eval(p+1, q-1, success);
   }
   else{
     uint32_t op = findMainOp(p, q, success);
