@@ -129,15 +129,13 @@ static int cmd_exp(char *args){
 }
 
 static int cmd_setWatchPoints(char *args){
-	char *arg = strtok(NULL, " ");
-
-	if(arg == NULL){
+	if(args == NULL){
 		return 0;
 	}
 
 	printf("Now is setting watchpoint");
 	WP* wp = new_wp();
-	strcpy(wp->exp, arg);
+	strcpy(wp->exp, args);
 	bool success = true;
 	wp->old_value = expr(wp->exp, &success);
 	if(!true){
