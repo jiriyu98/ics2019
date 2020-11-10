@@ -229,7 +229,7 @@ uint32_t calc(int pos, bool* success){
 // result case: 1-> (exp), 0 -> wrong exp, -1 -> exp
 
 int check_parentheses(int p, int q){
-	int result = 0;
+	int result = -1;
   int layer = 0;
   if(tokens[p].type=='(' && tokens[q].type==')'){
 		result = 1;
@@ -262,7 +262,6 @@ int check_parentheses(int p, int q){
 	if(layer != 0){
 		return 0;
 	}
-	printf("layer:%d\n", layer);
 	return result;
 }
 
