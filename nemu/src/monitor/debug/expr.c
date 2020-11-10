@@ -315,7 +315,7 @@ uint32_t eval(int p,int q, bool* success){
           return 0;
         }
 				printf("val1:%u / val2:%u\n", val1, val2);
-        return val1/val2;
+        return val1 / val2;
       case TK_EQ :
         return val1==val2;
       case TK_NOTEQ:
