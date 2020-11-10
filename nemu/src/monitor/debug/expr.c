@@ -33,8 +33,8 @@ static struct rule {
 	{"/", '/'},						// divide
 	{"\\(", '('},
 	{"\\)", ')'},
-	{"[0-9]+", TK_DECIMAL},
 	{"0[xX][:xdigit:]",TK_HEXADECIMAL},
+	{"[0-9]+", TK_DECIMAL},
 	{"\\$[a-zA-Z]+", TK_REG},
 	{"\\|\\|",TK_OR},
 	{"<=", TK_LESSEQ},
