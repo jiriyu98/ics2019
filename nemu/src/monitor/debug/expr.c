@@ -134,7 +134,7 @@ int op_precedence(int type)
   switch(type)
   {
 		case TK_NEGNUM:
-		case TK_POSNUM: printf("recg"); return 1;
+		case TK_POSNUM: return 1;
 		case TK_DEREFERENCE: return 2;
     case '*': 
 		case '/': return 3;
@@ -302,6 +302,7 @@ uint32_t eval(int p,int q, bool* success){
     if(*success==false){
     	return 0;
 		}
+		printf("p=%d, q=%d", p, q);
     uint32_t val2 = eval(op+1, q, success);
     if(*success==false){
     	return 0;
