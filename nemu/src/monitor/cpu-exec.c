@@ -61,6 +61,7 @@ void cpu_exec(uint64_t n) {
   log_clearbuf();
 
     /* TODO: check watchpoints here. */
+	check_watchpoints();
 
 #endif
 

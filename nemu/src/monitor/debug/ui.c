@@ -120,8 +120,9 @@ static int cmd_info(char *args){
 }
 
 static int cmd_exp(char *args){
+	char *arg = strtok(NULL, " ");
 	bool success = true;
-	uint32_t result = expr(args, &success);
+	uint32_t result = expr(arg, &success);
 	if(success){
     printf("\033[0;32m %s = %d(%#x) \033[0m;\n",args,result,result);
 	}
@@ -129,10 +130,34 @@ static int cmd_exp(char *args){
 }
 
 static int cmd_setWatchPoints(char *args){
+	char *arg = strtok(NULL, " ");
+
+	if(arg == NULL){
+		return 0;
+	}
+
+	WP* wp = new_wp();
+	strcpy(wp->exp, arg);
+	bool success = true;
+	wp->old_value = expr(wp->exp, &success);
+	if(!true){
+		return -1;
+	}
+	printf("NO.%d watchpoint is setted.", wp->NO);
 	return 0;
 }
 
 static int cmd_deleteWatchPoints(char *args){
+	char *arg = strtok(NULL, " ");
+
+	if(arg == NULL){
+		return 0;
+	}
+	int n = 0;
+	for (int i=0; i<strlen(args); i++){
+		n = args[i] + n * 10;
+	}
+	free_wp(n);
 	return 0;
 }
 
