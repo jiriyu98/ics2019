@@ -308,8 +308,8 @@ uint32_t eval(int p, int q, bool* success){
 		}
     switch (tokens[op].type){
 			case TK_DEREFERENCE: return vaddr_read(val2,4);
-			case TK_NEGNUM: return eval(op+1, q, success);
-			case TK_POSNUM: return -eval(op+1, q, success);
+			case TK_NEGNUM: return -eval(op+1, q, success);
+			case TK_POSNUM: return eval(op+1, q, success);
       case '+':
         return val1+val2;
       case '-':
