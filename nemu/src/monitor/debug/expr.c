@@ -307,6 +307,7 @@ uint32_t eval(int p,int q, bool* success){
       case '-':
         return val1-val2;
       case '*':
+				printf("val1:%u * val2:%u\n", val1, val2);
         return val1*val2;
       case '/':
         if(val2==0){
