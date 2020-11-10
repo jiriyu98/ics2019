@@ -35,7 +35,7 @@ static struct rule {
 	{"\\)", ')'},
 	{"0[xX][0-9a-fA-F]+",TK_HEXADECIMAL},
 	{"[0-9]+", TK_DECIMAL},
-	{"\\$0|[rsgt]p|t[0-6]|a[0-7]|s([0-9]|1[0-1])", TK_REG}, // more specific
+	{"\\$(\\$0|[rsgt]p|t[0-6]|a[0-7]|s([0-9]|1[0-1]))", TK_REG}, // more specific
 	// {"\\$[\\$0-9a-zA-z]+", TK_REG}, 
 	{"\\|\\|",TK_OR},
 	{"<=", TK_LESSEQ},
@@ -225,7 +225,7 @@ int calc(int pos, bool* success){
     }
   }
   else
-    total=isa_reg_str2val(tokens[pos].str,success);
+    total=isa_reg_str2val(&tokens[pos].str[1],success);
   return total;
 }
 
