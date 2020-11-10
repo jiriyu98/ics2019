@@ -296,7 +296,7 @@ uint32_t eval(int p, int q, bool* success){
     	return 0;
 		}
 		uint32_t val1 = 0;
-		if(op != TK_DEREFERENCE && op != TK_NEGNUM && op != TK_POSNUM){
+		if(tokens[op].type != TK_DEREFERENCE && tokens[op].type != TK_NEGNUM && tokens[op].type != TK_POSNUM){
 			val1 = eval(p, op-1, success);
 		}
     if(*success==false){
