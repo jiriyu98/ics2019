@@ -134,7 +134,7 @@ int op_precedence(int type)
   switch(type)
   {
 		case TK_NEGNUM:
-		case TK_POSNUM: return 1;
+		case TK_POSNUM: printf("recg"); return 1;
 		case TK_DEREFERENCE: return 2;
     case '*': 
 		case '/': return 3;
