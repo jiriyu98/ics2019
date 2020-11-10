@@ -157,6 +157,7 @@ static int cmd_deleteWatchPoints(char *args){
 	for (int i=0; i<strlen(args); i++){
 		n = args[i] + n * 10;
 	}
+		printf("%s\n", args);
 	free_wp(n);
 	return 0;
 }
