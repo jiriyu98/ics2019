@@ -18,6 +18,7 @@ static inline void test_expr(){
 		printf("result: %u\n", result);
 		if(!success){
 			printf("Wrong expr\n");
+			break;
 		}else{
 			if(result == ans){
 				printf("True! Cong!\n");
@@ -38,10 +39,10 @@ int main(int argc, char *argv[]) {
   int is_batch_mode = init_monitor(argc, argv);
 
   /* Receive commands from user. */
-  // ui_mainloop(is_batch_mode);
+  ui_mainloop(is_batch_mode);
 	
 	/* test expr() */
-	test_expr();
+	// test_expr();
 
 
   return 0;

@@ -6,9 +6,6 @@
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
 
-WP* new_wp();
-void free_wp(WP *wp);
-
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
@@ -24,11 +21,26 @@ void init_wp_pool() {
 /* TODO: Implement the functionality of watchpoint */
 
 void watchpoints_display(){
-	
+  WP* node =head;
+  printf("\033[0;34m");
+  printf("NUM                    VALUE                    EXPR\n");
+  while(node!=NULL)
+  {
+    uint32_t num = node->old_value;
+    int len=0;
+    while(num>0){
+      num/=10;
+      len++;
+    }
+    printf("%-16d%u(0x%-8x)%*s%s\n",
+          node->NO,node->old_value,node->old_value,(44-16-8-len)," ",node->exp);
+    node=node->next;
+  }
+  printf("\033[0m");
 }
 
-WP* new_wp(){
-	if(free == NULL){
+WP* new_wp(char *exp){
+	if(free_ == NULL){
 		assert(0);
 	}
 	WP* newwp = free_;
@@ -38,11 +50,11 @@ WP* new_wp(){
 	return newwp;
 }
 
-void free_wp(WP *wp){
-	if(wp == NULL || head == NULL){
+void free_wp(int NO){
+	if(head == NULL || NO < 0 || NO >31){
 		return;
 	}
-	if(wp == head){
+	if(NO == head->NO){
 		WP* temp = head;
 		head = head->next;
 		temp->next = free_;
@@ -52,7 +64,7 @@ void free_wp(WP *wp){
 	
 	WP *front=head, *temp=head->next;
 	while(temp!=NULL){
-		if(wp == temp){
+		if(NO == temp->NO){
 			front->next = temp->next;
 			temp->next = free_;
 			free_ = temp;
@@ -61,4 +73,27 @@ void free_wp(WP *wp){
 		front = temp;
 		temp = temp->next;
 	}
+}
+
+bool check_watchpoints(){
+  WP* node = head; 
+  bool result=true;
+  while(node!=NULL){
+		bool success = true;
+		uint32_t newValue = expr(node->exp, &success);
+			if(!success){
+				assert(0);
+			}
+			if(newValue!=node->old_value){
+				  printf("\033[0;33m");
+				  printf("watchpoints %d : %s\n",node->NO, node->exp);
+				  printf("Old Value : %d(0x%x)\n",node->old_value, node->old_value); 
+				  printf("New Value : %d(0x%x)\n",newValue, newValue); 
+				  printf("\033[0m");
+				  node->old_value=newValue;
+				  result=false;
+			}
+			node=node->next;
+  }
+  return result;
 }

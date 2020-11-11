@@ -33,9 +33,10 @@ static struct rule {
 	{"/", '/'},						// divide
 	{"\\(", '('},
 	{"\\)", ')'},
-	{"[0-9]+", TK_DECIMAL},
 	{"0[xX][0-9a-fA-F]+",TK_HEXADECIMAL},
-	{"\\$[a-zA-Z]+", TK_REG},
+	{"[0-9]+", TK_DECIMAL},
+	{"\\$(\\$0|ra|[sgt]p|t[0-6]|a[0-7]|s([0-9]|1[0-1]))", TK_REG}, // more specific
+	// {"\\$[\\$0-9a-zA-z]+", TK_REG},  // general
 	{"\\|\\|",TK_OR},
 	{"<=", TK_LESSEQ},
 	{">=", TK_GREATEREQ},
@@ -70,7 +71,7 @@ typedef struct token {
   char str[32];
 } Token;
 
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[64] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -133,6 +134,9 @@ int op_precedence(int type)
 {
   switch(type)
   {
+		case TK_NEGNUM:
+		case TK_POSNUM: return 1;
+		case TK_DEREFERENCE: return 2;
     case '*': 
 		case '/': return 3;
     case '+': 
@@ -171,8 +175,7 @@ uint32_t findMainOp(int p, int q, bool* success){
 				precedence=type_prcedence;
 			}
 		}
-		else
-		{
+		else{
 		  if(tokens[i].type==')'){
 		  	layer--;
 			}
@@ -189,9 +192,9 @@ uint32_t findMainOp(int p, int q, bool* success){
 	return op;
 }
 
-uint32_t calc(int pos, bool* success){
-	uint32_t total = 0;
-  uint32_t i=0;
+int calc(int pos, bool* success){
+	int total = 0;
+  int i=0;
   if(tokens[pos].type!=TK_REG){
     bool isDecimal = tokens[pos].type==TK_DECIMAL ? true:false;
     while(tokens[pos].str[i]!='\0')
@@ -229,11 +232,14 @@ uint32_t calc(int pos, bool* success){
 // result case: 1-> (exp), 0 -> wrong exp, -1 -> exp
 
 int check_parentheses(int p, int q){
+	int result = -1;
   int layer = 0;
   if(tokens[p].type=='(' && tokens[q].type==')'){
+		result = 1;
     for(int i=p+1; i<=q-1; i++){
-      if(layer<0){
-        return 0;
+      if(layer < 0){
+        result = -1; // 0 or -1
+				break;
       }
       if(tokens[i].type == '('){
 				layer++;
@@ -242,11 +248,12 @@ int check_parentheses(int p, int q){
 				layer--;
 			}
     }
-		return 1;
   }
+	layer = 0;
 	for(int i=p; i<=q; i++){
-    if(layer<0){
-      return 0;
+    if(layer < 0){
+      result = 0;
+			break;
     }
     if(tokens[i].type == '('){
 			layer++;
@@ -255,10 +262,13 @@ int check_parentheses(int p, int q){
 			layer--;
 		}
   }
-	return -1;
+	if(layer != 0){
+		return 0;
+	}
+	return result;
 }
 
-uint32_t eval(int p,int q, bool* success){
+uint32_t eval(int p, int q, bool* success){
 	if (p>q){
       printf ("Bad expression. p>q \n");
       *success=false;
@@ -275,17 +285,21 @@ uint32_t eval(int p,int q, bool* success){
   int check = check_parentheses(p,q);
   if(check!=-1){
 		if(check == 0){
-			printf("Bad expression ! check_parenthese\n");
+			printf("Bad expression ! check_parenthese, [%d, %d]\n", p, q);
     	*success=false;
+			return 0;
 		}
-		return eval(p+1,q-1,success);
+		return eval(p+1, q-1, success);
   }
   else{
     uint32_t op = findMainOp(p, q, success);
     if(*success==false){
     	return 0;
 		}
-    uint32_t val1 = eval(p, op-1, success);
+		uint32_t val1 = 0;
+		if(tokens[op].type != TK_DEREFERENCE && tokens[op].type != TK_NEGNUM && tokens[op].type != TK_POSNUM){
+			val1 = eval(p, op-1, success);
+		}
     if(*success==false){
     	return 0;
 		}
@@ -294,6 +308,9 @@ uint32_t eval(int p,int q, bool* success){
     	return 0;
 		}
     switch (tokens[op].type){
+			case TK_DEREFERENCE: return vaddr_read(val2,4);
+			case TK_NEGNUM: return -eval(op+1, q, success);
+			case TK_POSNUM: return eval(op+1, q, success);
       case '+':
         return val1+val2;
       case '-':
@@ -306,7 +323,8 @@ uint32_t eval(int p,int q, bool* success){
           *success=false;
           return 0;
         }
-        return val1/val2;
+				printf("val1:%u / val2:%u\n", val1, val2);
+        return val1 / val2;
       case TK_EQ :
         return val1==val2;
       case TK_NOTEQ:
@@ -337,27 +355,24 @@ uint32_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
 
-	for (i = 0; i < nr_token; i ++) {
-			if(i == 0 || (tokens[i - 1].type != TK_REG || tokens[i - 1].type != TK_DECIMAL || tokens[i - 1].type != TK_HEXADECIMAL || tokens[i - 1].type != ')'){
-				switch(tokens[i].type){
-					case '*': tokens[i].type = TK_DEREFERENCE; break;
-					/*
-					case '+': tokens[i].type = TK_POSNUM;
-					case '-': 
-						if()
-						tokens[i].type = TK_NEGNUM;
-					*/
-				}
+	/* DEREFERENCE TOKEN TYPE*/
+	for (int i = 0; i < nr_token; i ++) {
+		if(i == 0 || (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL && tokens[i - 1].type != TK_HEXADECIMAL && tokens[i - 1].type != ')' && tokens[i - 1].type != TK_POSNUM && tokens[i - 1].type != TK_NEGNUM)){
+			if(tokens[i].type == '*'){
+				tokens[i].type = TK_DEREFERENCE;
+			}
+		}
+	}
+	/* NEG OR POS NUMBER TYPE */
+	for (int i = 0; i < nr_token; i ++) {
+		if(i == 0 || (tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_DECIMAL && tokens[i - 1].type != TK_HEXADECIMAL && tokens[i - 1].type != ')' && tokens[i - 1].type != TK_DEREFERENCE && tokens[i - 1].type != TK_POSNUM && tokens[i - 1].type != TK_NEGNUM)){
+			switch(tokens[i].type){
+				case '+': tokens[i].type = TK_POSNUM; break;
+				case '-': tokens[i].type = TK_NEGNUM; break;
 			}
 		}
 	}
 
-/*
-	for (i = 0; i < nr_token; i ++) {
-		if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_REG || tokens[i - 1].type != TK_DECIMAL || tokens[i - 1].type != TK_HEXADECIMAL || tokens[i - 1].type != ')')) ) {
-		  tokens[i].type = TK_DEREFERENCE;
-		}
-*/
 	*success = true;
   return eval(0, nr_token-1, success);
 }
