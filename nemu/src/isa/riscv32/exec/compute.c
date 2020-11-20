@@ -162,6 +162,10 @@ make_EHelper(srl_sra){
 		  rtl_shr(&id_dest->val, &id_src->val, &id_src2->val);
 		  print_asm_template3(srl); 
 		  break;
+		case 0b0100000: /* sra */
+		  rtl_sar(&id_dest->val, &id_src->val, &id_src2->val);
+		  print_asm_template3(sra);
+		  break;
 		case 0b0000001: /* divu */
 		  rtl_div_q(&id_dest->val, &id_src->val, &id_src2->val);
 		  print_asm_template3(divu);
