@@ -13,16 +13,14 @@ make_EHelper(ld) {
 }
 
 make_EHelper(lb) {
-  rtl_lm(&s0, &id_src->addr, decinfo.width);
-  rtl_sext(&s1, &s0, 1);
-  rtl_sr(id_dest->reg, &s1, 4); 
-	print_asm_template2(lb); 
+  rtl_sext(&s0, &id_src->addr, decinfo.width);
+  rtl_sr(id_dest->reg, &s0, 4);
+	print_asm_template2(lb);
 }
 
 make_EHelper(lh) {
-  rtl_lm(&s0, &id_src->addr, decinfo.width);
-  rtl_sext(&s1, &s0, 2);
-  rtl_sr(id_dest->reg, &s1, 4);  
+  rtl_sext(&s0, &id_src->addr, decinfo.width);
+  rtl_sr(id_dest->reg, &s0, 4);
 	print_asm_template2(lh);
 }
 

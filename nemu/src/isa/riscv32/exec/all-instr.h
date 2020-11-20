@@ -21,14 +21,10 @@ make_EHelper(bge);
 make_EHelper(bltu);
 make_EHelper(bgeu);
 
-
 /* load instruction */
 make_EHelper(ld);
 make_EHelper(lh);
 make_EHelper(lb);
-
-/* store instruction */
-make_EHelper(ld);
 make_EHelper(st);
 
 /* I-type */
