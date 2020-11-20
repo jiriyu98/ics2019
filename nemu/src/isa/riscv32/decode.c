@@ -29,7 +29,7 @@ make_DHelper(B) {
   t0 = (decinfo.isa.instr.simm12 << 12) | (decinfo.isa.instr.imm11 << 11) | 
        (decinfo.isa.instr.imm10_5 << 5) | (decinfo.isa.instr.imm4_1 << 1);
  
-  t0 = (t0 << 19) >> 19;
+  t0 = (uint32_t)((int32_t)(t0 << 19) >> 19);
   
   rtl_add(&decinfo.jmp_pc, &t0, &cpu.pc);
   print_Dop(id_dest->str, OP_STR_SIZE, "0x%x", t0);
@@ -37,7 +37,7 @@ make_DHelper(B) {
 
 make_DHelper(J) {
   t0 =  (decinfo.isa.instr.simm20 << 20) | (decinfo.isa.instr.imm19_12 << 12) | (decinfo.isa.instr.imm11_ << 11) | (decinfo.isa.instr.imm10_1 << 1);   
-	t0 = (t0 << 11 ) >> 11;
+	t0 = (uint32_t)((int32_t)(t0 << 11) >> 11);
   
   decode_op_i(id_src , t0, true);
   decode_op_r(id_dest, decinfo.isa.instr.rd, false);
