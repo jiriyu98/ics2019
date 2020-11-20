@@ -26,6 +26,7 @@ int main() {
 	unsigned i;
 
 	for(i = 0; i < ARR_SIZE(mem); i ++) {
+		printf("mem:0x%08x = lh_ans:0x%08x", &mem[i], &lh_ans[i]);
 		nemu_assert((short)mem[i] == lh_ans[i]);
 	}
 
