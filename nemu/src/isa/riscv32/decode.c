@@ -39,7 +39,7 @@ make_DHelper(J) {
   t0 =  (decinfo.isa.instr.simm20 << 20) | (decinfo.isa.instr.imm19_12 << 12) | (decinfo.isa.instr.imm11_ << 11) | (decinfo.isa.instr.imm10_1 << 1);   
 	t0 = (t0 << 11 ) >> 11;
   
-  decode_op_i(id_src , t0, true);
+  decode_op_i(id_src , &t0, true);
   decode_op_r(id_dest, decinfo.isa.instr.rd, false);
   
   print_Dop(id_src->str, OP_STR_SIZE, "0x%x", t0);
