@@ -36,6 +36,7 @@ make_EHelper(srl_sra);/* 101 */
 make_EHelper(or);      /* 110 */
 make_EHelper(and);     /* 111 */
 
+/* ldst */
 make_EHelper(ld);
 make_EHelper(lb);
 make_EHelper(lh);
