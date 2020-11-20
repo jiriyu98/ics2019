@@ -23,7 +23,7 @@ static OpcodeEntry store_table [8] = {
   EXW(st, 1), EXW(st, 2), EXW(st, 4), EMPTY, EMPTY, EMPTY, EMPTY, EMPTY
 };
 
-static make_EHelper(store) {
+make_EHelper(store) {
   decinfo.width = store_table[decinfo.isa.instr.funct3].width;
   idex(pc, &store_table[decinfo.isa.instr.funct3]);
 }
@@ -32,7 +32,7 @@ static OpcodeEntry r_table [8] = {
    EX(sub_add), EX(sll), EX(slt), EX(sltu), EX(xor), EX(srl_sra), EX(or), EX(and)
 };
 
-static make_EHelper(r) { /* static void exec_r(vaddr_t *pc) */
+make_EHelper(r) { /* static void exec_r(vaddr_t *pc) */
   decinfo.width = r_table[decinfo.isa.instr.funct3].width;
   idex(pc, &r_table[decinfo.isa.instr.funct3]);
 }
@@ -41,7 +41,7 @@ static OpcodeEntry br_table [8] = {
    EX(beq), EX(bne), EMPTY, EMPTY, EX(blt), EX(bge), EX(bltu), EX(bgeu)
 };
 
-static make_EHelper(br) { /* static void exec_r(vaddr_t *pc) */
+make_EHelper(br) { /* static void exec_r(vaddr_t *pc) */
   decinfo.width = br_table[decinfo.isa.instr.funct3].width;
   idex(pc, &br_table[decinfo.isa.instr.funct3]);
 }
