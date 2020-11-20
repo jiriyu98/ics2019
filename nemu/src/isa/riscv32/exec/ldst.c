@@ -6,7 +6,7 @@ make_EHelper(ld) {
 
   switch (decinfo.width) {
     case 4: print_asm_template2(lw); break;
-    case 2: print_asm_template2(lhu); break;
+    case 2: print_asm_template2(lhu); printf("lhu:0x%08x", &s0); break;
     case 1: print_asm_template2(lbu); break;
     default: assert(0);
   }
