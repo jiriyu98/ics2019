@@ -35,7 +35,7 @@ make_DHelper(B) {
   print_Dop(id_dest->str, OP_STR_SIZE, "0x%x", t0);
 }
 
-make_DopHelper(J) {
+make_DHelper(J) {
   t0 =  (decinfo.isa.instr.simm20 << 20) | (decinfo.isa.instr.imm19_12 << 12) | (decinfo.isa.instr.imm11_ << 11) | (decinfo.isa.instr.imm10_1 << 1);   
 	t0 = (t0 << 11 ) >> 11;
   
@@ -45,7 +45,7 @@ make_DopHelper(J) {
   print_Dop(id_src->str, OP_STR_SIZE, "0x%x", t0);
 }
 
-make_DopHelper(R) {
+make_DHelper(R) {
 	decode_op_r(id_src, decinfo.isa.instr.rs1, true);
   decode_op_r(id_src2, decinfo.isa.instr.rs2, true);
   decode_op_r(id_dest, decinfo.isa.instr.rd, false);
