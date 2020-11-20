@@ -56,7 +56,8 @@ static OpcodeEntry opcode_table [32] = {
 
 void isa_exec(vaddr_t *pc) {
   decinfo.isa.instr.val = instr_fetch(pc, 4);
-	printf("0x%08x\n", *pc);
+	printf("0x%08x : ", *pc);
   assert(decinfo.isa.instr.opcode1_0 == 0x3);
+	printf("%d\n", decinfo.isa.instr.opcode6_2);
   idex(pc, &opcode_table[decinfo.isa.instr.opcode6_2]);
 }
