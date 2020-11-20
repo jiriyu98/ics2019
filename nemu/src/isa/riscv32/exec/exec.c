@@ -42,8 +42,8 @@ static OpcodeEntry br_table [8] = {
 };
 
 static make_EHelper(br) { /* static void exec_r(vaddr_t *pc) */
-  decinfo.width = r_table[decinfo.isa.instr.funct3].width;
-  idex(pc, &r_table[decinfo.isa.instr.funct3]);
+  decinfo.width = br_table[decinfo.isa.instr.funct3].width;
+  idex(pc, &br_table[decinfo.isa.instr.funct3]);
 }
 
 
