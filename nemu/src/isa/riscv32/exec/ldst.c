@@ -21,6 +21,7 @@ make_EHelper(lb) {
 make_EHelper(lh) {
   rtl_sext(&s0, &id_src->addr, decinfo.width);
   rtl_sr(id_dest->reg, &s0, 4);
+	printf("lh:0x%08x", s0);
 	print_asm_template2(lh);
 }
 
