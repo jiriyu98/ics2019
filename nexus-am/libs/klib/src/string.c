@@ -66,8 +66,9 @@ void* memset(void* v,int c,size_t n) {
 void* memcpy(void* out, const void* in, size_t n) {
   void *dst = out;
 	while(--n){
-		*(char *)out = *(char *)in++;
+		*(char *)out = *(char *)in;
 		out = (char *)out + 1;
+		in = (char *)in + 1;
 	}
 	return dst;
 }
