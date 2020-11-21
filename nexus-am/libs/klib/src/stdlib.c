@@ -10,30 +10,36 @@ void srand(unsigned int seed) {
   next = seed;
 }
 
-void itoa(char *str, int num, int radix) 
-{  
-	char index[]="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
-	unsigned unum; 
-	int i=0,j,k; 
-	if(radix==10&&num<0)
-	{ 
-		unum=(unsigned)-num; 
-		str[i++]='-'; 
-	} 
-	else unum=(unsigned)num;
-	do  
-	{ 
-		str[i++]=index[unum%(unsigned)radix]; 
-		unum/=radix; 
-	}while(unum); 
-	str[i]='\0'; 
-	if(str[0]=='-') k=1;
-	else k=0; 
-	char temp; 
-	for(j=k;j<=(i-k-1)/2;j++) 
-	{ 
-		temp=str[j]; 
-		str[j]=str[i-j-1]; 
-		str[i-j-1]=temp; 
-	}  
-} 
+void itoa(char *buf, int val, unsigned radix)
+{
+    char   *p;             
+    char   *firstdig;      
+    char   temp;           
+    unsigned   digval;     
+    p = buf;
+    if(val <0)
+    {
+        *p++ = '-';
+        val = (unsigned long)(-(long)val);
+    }
+    firstdig = p; 
+    do{
+        digval = (unsigned)(val % radix);
+        val /= radix;
+       
+        if  (digval > 9)
+            *p++ = (char)(digval - 10 + 'a'); 
+        else
+            *p++ = (char)(digval + '0');      
+    }while(val > 0);
+   
+    *p-- = '\0 ';         
+    do{
+        temp = *p;
+        *p = *firstdig;
+        *firstdig = temp;
+        --p;
+        ++firstdig;        
+    }while(firstdig < p);  
+    return;
+}
