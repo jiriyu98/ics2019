@@ -3,15 +3,19 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 int printf(const char *fmt, ...) {
-/*
-  va_list arg;
-  int done;
-  va_start(arg, fmt);
-  done = vsprintf(NULL, fmt, arg);
-  va_end(arg);
-  return done;
-*/
-	return 0;
+  char pbuf[1024];
+  va_list ap;
+  int i;
+  va_start(ap,fmt);
+  i=vsprintf(pbuf,fmt,ap);
+  va_end(ap);
+  int j=0;
+  while(pbuf[j]!='\0'){
+     _putc(pbuf[j]);
+	 j++;
+  }
+  _putc('\0');
+  return i;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
