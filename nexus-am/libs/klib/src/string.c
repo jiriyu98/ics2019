@@ -60,7 +60,7 @@ void* memcpy(void* out, const void* in, size_t n) {
 
 int memcmp(const void* s1, const void* s2, size_t n){
 	while(--n && *(int *)s1 && *(int *)s2 && *(int *)s1++ == *(int *)s2++);
-	return s1;
+	return *(int *)s1 - *(int *)s2;
 }
 
 #endif
