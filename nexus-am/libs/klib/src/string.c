@@ -3,8 +3,10 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
-	size_t len = -1;
-	while(s[++len]!='\0');
+	size_t len = 0;
+	while(s[len]!='\0'){
+		len++;
+	}
   return len;
 }
 
@@ -29,7 +31,9 @@ char* strncpy(char* dst, const char* src, size_t n) {
 
 char* strcat(char* dst, const char* src) {
   char *tmp = dst;
-  while(*dst++);
+  while(*dst){
+		dst++;
+	}
   while((*dst++ = *src++) != '\0');
   return tmp;
 }
