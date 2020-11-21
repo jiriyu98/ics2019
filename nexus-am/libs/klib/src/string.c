@@ -11,17 +11,10 @@ size_t strlen(const char *s) {
 }
 
 char *strcpy(char* dst,const char* src) {
-  /* 错误的实现方法
-   * return strncpy(dst, src, strlen(dst) );
-   *
-   * 正确的实现方法
-   * return strncpy(dst, src, strlen(src));但这种方法效率比较低下
-   */
-
   size_t i;
-  for(i=0;src[i]!='\0';i++) 
-    dst[i]=src[i];
-  
+  for(i=0; src[i]!='\0'; i++){
+    dst[i] = src[i];
+	}
   dst[i]='\0';
   return dst;
 }
