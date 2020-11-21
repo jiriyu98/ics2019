@@ -10,7 +10,7 @@ void srand(unsigned int seed) {
   next = seed;
 }
 
-char *itoa(char *str, int num, int radix) 
+void itoa(char *str, int num, int radix) 
 {  
 	char index[]="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
 	unsigned unum; 
@@ -35,6 +35,5 @@ char *itoa(char *str, int num, int radix)
 		temp=str[j]; 
 		str[j]=str[i-j-1]; 
 		str[i-j-1]=temp; 
-	} 
-	return str; 
+	}  
 } 
