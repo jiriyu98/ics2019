@@ -19,10 +19,13 @@ char *strcpy(char* dst,const char* src) {
   return dst;
 }
 
-char *strncpy(char* dst, const char* src, size_t n) {
+char* strncpy(char* dst, const char* src, size_t n) {
+	dst[n] = '\0';
   size_t i;
-  for (i = 0; i < n && src[i]!= '\0'; i++) dst[i] = src[i];
-  for (; i < n; i++) dst[i] = '\0';
+  for(i=0; src[i]!='\0' && i<n; i++){
+    dst[i] = src[i];
+	}
+  dst[++i]='\0';
   return dst;
 }
 
