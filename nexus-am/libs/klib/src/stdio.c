@@ -14,7 +14,7 @@ int printf(const char *fmt, ...) {
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
 	char* p;
-	char tmp[256], tmps;
+	char tmp[256], *tmps;
 	for (p = out; *fmt; fmt++){
 	  if (*fmt != '%'){
 	      *p++ = *fmt;
