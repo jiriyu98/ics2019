@@ -1,7 +1,10 @@
 #include "klib.h"
-#include <stdio.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
+
+void _puts(char* s){
+	for(int i = 0; i < strlen(s); ++i) _putc(s[i]);
+}
 
 int printf(const char *fmt, ...) {
   va_list arg;
@@ -34,7 +37,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         p += strlen(tmp);
         break;
       case 's':
-        tmps = va_arg(ap, char *);
+        tmps = va_arg(ap, char*);
 				printf("%s", tmps);
 				strcpy(p, tmps);
         p += strlen(tmps);
