@@ -30,27 +30,28 @@ char* strncpy(char* dst, const char* src, size_t n) {
 }
 
 char* strcat(char* dst, const char* src) {
-  char *tmp = dst;
-  while(*dst){
-		dst++;
-	}
+  char *str=dst;
+  assert(dst!=NULL && src!=NULL);
+  while(*dst!='\0') {
+    dst++;
+  }
   while((*dst++ = *src++) != '\0');
-  return tmp;
+  return str;
 }
 
 int strcmp(const char* s1, const char* s2) {
-	while(*s1 && *s2 && *s1 == *s2){
-		s1++;
-		s2++;
-	}
-	return *s1 - *s2;
-}
-
-int strncmp(const char* s1, const char* s2, size_t n) {
   uint32_t i = 0;
   for (i = 0; s1[i] == s2[i]; i++) if(s1[i] == '\0') return 0;
 
   return ((signed char *)s1)[i] - ((signed char *)s2)[i];
+}
+
+int strncmp(const char* s1, const char* s2, size_t n) {
+	while(--n && *s1 && *s2 && *s1 == *s2){
+		s1++;
+		s2++;
+	}
+	return *s1 - *s2;
 }
 
 void* memset(void* v,int c,size_t n) {
