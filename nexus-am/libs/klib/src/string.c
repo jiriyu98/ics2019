@@ -7,6 +7,7 @@ size_t strlen(const char *s) {
 	while(s[len]!='\0'){
 		len++;
 	}
+	printf("%d\n", len);
   return len;
 }
 
