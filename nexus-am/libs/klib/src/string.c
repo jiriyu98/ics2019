@@ -30,19 +30,12 @@ char* strncpy(char* dst, const char* src, size_t n) {
 }
 
 char* strcat(char* dst, const char* src) {
-  
-  /* 虽然这种方法也可以通过，但是性能非常非常的低下
-   * strcpy (dst + strlen(src), src);
-   * return dst;
-   */
-  
-  char *str=dst;
-  assert(dst!=NULL && src!=NULL);
-  while(*dst!='\0') {
-    dst++;
-  }
+  char *tmp = dst;
+  while(*dst){
+		dst++;
+	}
   while((*dst++ = *src++) != '\0');
-  return str;
+  return tmp;
 }
 
 int strcmp(const char* s1, const char* s2) {
