@@ -31,7 +31,9 @@ char* strncpy(char* dst, const char* src, size_t n) {
 
 char* strcat(char* dst, const char* src) {
   char *tmp = dst;
-  while(*dst++);
+  while(*dst){
+		dst++;
+	}
   while((*dst++ = *src++) != '\0');
   return tmp;
 }
@@ -67,6 +69,7 @@ void* memcpy(void* out, const void* in, size_t n) {
 }
 
 int memcmp(const void* s1, const void* s2, size_t n){
+	if(!n) return 0;
 	while(--n && *(int *)s1 && *(int *)s2 && *(int *)s1 == *(int *)s2){
 		(int *)s1++;
 		(int *)s2++;
