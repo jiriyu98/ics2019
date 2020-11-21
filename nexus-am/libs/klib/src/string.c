@@ -56,19 +56,16 @@ int strncmp(const char* s1, const char* s2, size_t n) {
 
 void* memset(void* v,int c,size_t n) {
 	void *dst = v;
-	while(--n){
-		*(char *)v = (char)c;
-		v = (char *)v + 1;
+	while(n--){
+		*(char *)v++ = (char)c;
 	}
 	return dst;
 }
 
 void* memcpy(void* out, const void* in, size_t n) {
   void *dst = out;
-	while(--n){
-		*(char *)out = *(char *)in;
-		out = (char *)out + 1;
-		in = (char *)in + 1;
+	while(n--){
+		*(char *)out++ = *(char *)in++;
 	}
 	return dst;
 }
@@ -76,8 +73,8 @@ void* memcpy(void* out, const void* in, size_t n) {
 int memcmp(const void* s1, const void* s2, size_t n){
 	if(!n) return 0;
 	while(--n && *(char *)s1 == *(char *)s2){
-		s1 = (char *)s1 + 1;
-		s2 = (char *)s2 + 1;
+		s1++;
+		s2++;
 	}
 	return *(char *)s1 - *(char *)s2;
 }
