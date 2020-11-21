@@ -1,15 +1,15 @@
 #include "klib.h"
-#include <stdlib.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 int printf(const char *fmt, ...) {
-	int i;
-	char buf[256];
-	va_list arg = (va_list)((char*)(&fmt)+4);
-	i = vsprintf(buf, fmt, arg);
-	write(buf, i);
-  return i;
+  va_list arg;
+  int done;
+  va_start(arg, fmt);
+  done = vsprintf(NULL, fmt, arg);
+  va_end(arg);
+ 
+  return done;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {

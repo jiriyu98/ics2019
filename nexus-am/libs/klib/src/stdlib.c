@@ -9,3 +9,32 @@ int rand(void) {
 void srand(unsigned int seed) {
   next = seed;
 }
+
+char *itoa(char *str, int num, int radix) 
+{  
+	char index[]="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+	unsigned unum; 
+	int i=0,j,k; 
+	if(radix==10&&num<0)
+	{ 
+		unum=(unsigned)-num; 
+		str[i++]='-'; 
+	} 
+	else unum=(unsigned)num;
+	do  
+	{ 
+		str[i++]=index[unum%(unsigned)radix]; 
+		unum/=radix; 
+	}while(unum); 
+	str[i]='\0'; 
+	if(str[0]=='-') k=1;
+	else k=0; 
+	char temp; 
+	for(j=k;j<=(i-k-1)/2;j++) 
+	{ 
+		temp=str[j]; 
+		str[j]=str[i-j-1]; 
+		str[i-j-1]=temp; 
+	} 
+	return str; 
+} 
