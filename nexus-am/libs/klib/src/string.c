@@ -55,17 +55,19 @@ int strncmp(const char* s1, const char* s2, size_t n) {
 }
 
 void* memset(void* v,int c,size_t n) {
+	char *dst = (char *)v;
 	while(--n){
 		*(char *)v++ = c;
 	}
-	return v;
+	return dst;
 }
 
 void* memcpy(void* out, const void* in, size_t n) {
+  char *dst = (char *)out;
 	while(--n){
 		*(char *)out++ = *(char *)in++;
 	}
-	return out;
+	return dst;
 }
 
 int memcmp(const void* s1, const void* s2, size_t n){
