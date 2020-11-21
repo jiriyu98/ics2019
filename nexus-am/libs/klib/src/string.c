@@ -43,7 +43,7 @@ int strcmp(const char* s1, const char* s2) {
 		s1++;
 		s2++;
 	}
-		printf("%d\n", *s1 - *s2);
+	printf("%d\n", *s1 - *s2);
 	return *s1 - *s2;
 }
 
