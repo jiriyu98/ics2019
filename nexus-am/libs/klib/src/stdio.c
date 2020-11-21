@@ -3,6 +3,8 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
+/* refer: https://github.com/likmin/ics2019/blob/3bc63f31e248bfbb87fa4c491b5f146ecf798f76/nexus-am/libs/klib/src/stdio.c */
+
 struct param {
 	char uc:1;
 	char sign;			/* '-' 				 */
@@ -125,18 +127,9 @@ int printf(const char *fmt, ...) {
 	va_start(ap, fmt);
 	my_format(NULL, _printf_putc, fmt, ap);
 	va_end(ap);
-
-	/*
-		0x3F8 
-		printf -> _putc(ch) -> putchar(0x3F8, ch) -> outb(addr, ch) -> *addr = ch
-	 */
 	return 0;
 }
-/* snprintf()用于将格式化的数据写入字符串 
- * out: 为要写入的字符串
- * n  : 要写入的字符的最大数据，超过n会被截断
- * fmt: 格式化字符串
- */
+
 int snprintf(char *out, size_t n, const char *fmt, ...) {
 
   return 0;
