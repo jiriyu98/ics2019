@@ -13,6 +13,7 @@ char str1[] = "Hello";
 char str[20];
 
 int main() {
+	printf("%d\n", strcmp(s[0], s[2]));
 	nemu_assert(strcmp(s[0], s[2]) == 0);
 	nemu_assert(strcmp(s[0], s[1]) == -1);
 	nemu_assert(strcmp(s[0] + 1, s[1] + 1) == -1);
