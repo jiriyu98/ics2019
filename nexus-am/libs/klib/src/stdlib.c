@@ -9,28 +9,3 @@ int rand(void) {
 void srand(unsigned int seed) {
   next = seed;
 }
-
-void itoa(char *buf, int val, unsigned radix)
-{
-
-	char zm[37]="0123456789abcdefghijklmnopqrstuvwxyz";
-	char aa[100]={0};
- 
-	int sum=val;
-	char *cp=buf;
-	int i=0;
- 
-	while(sum>0)
-	{
-		aa[i++]=zm[sum%radix];
-		sum/=radix;
-	}
- 
-	for(int j=i-1;j>=0;j--)
-	{
-		*cp++=aa[j];
-	}
-	*cp='\0';
-	return;
-
-}
