@@ -47,11 +47,10 @@ int strcmp(const char* s1, const char* s2) {
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {
-	while(--n && *s1 && *s2 && *s1 == *s2){
-		s1++;
-		s2++;
-	}
-	return *s1 - *s2;
+  uint32_t i = 0;
+  for (i = 0; s1[i] == s2[i]; i++) if(s1[i] == '\0') return 0;
+
+  return ((signed char *)s1)[i] - ((signed char *)s2)[i];
 }
 
 void* memset(void* v,int c,size_t n) {
@@ -62,21 +61,19 @@ void* memset(void* v,int c,size_t n) {
 }
 
 void* memcpy(void* out, const void* in, size_t n) {
-  const char *src = in;
-  char *dst = out;
-
-  while (n--) *dst++ = *src++;
-
-  return out;
+	while(--n){
+		*(int *)out++ = *(int *)in++;
+	}
+	return out;
 }
 
 int memcmp(const void* s1, const void* s2, size_t n){
-  if(!n) return 0;
-  while(--n && *(char *)s1 == *(char *)s2) {
-	s1 = (char *)s1 + 1;
-	s2 = (char *)s2 + 1;
-  }
-  return (*((unsigned char *)s1) - *((unsigned char *)s2));
+	if(!n) return 0;
+	while(--n && *(int *)s1 && *(int *)s2 && *(int *)s1 == *(int *)s2){
+		(int *)s1++;
+		(int *)s2++;
+	}
+	return *(int *)s1 - *(int *)s2;
 }
 
 #endif
