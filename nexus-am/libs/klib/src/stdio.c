@@ -15,7 +15,6 @@ int printf(const char *fmt, ...) {
 int vsprintf(char *out, const char *fmt, va_list ap) {
 	char* p;
 	char tmp[256];
-	va_list p_next_arg = ap;
 	for (p = out; *fmt; fmt++){
 	  if (*fmt != '%'){
 	      *p++ = *fmt;
@@ -24,20 +23,17 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 	  fmt++;
 	  switch (*fmt){
 			case 'd':
-				itoa(tmp, *((int*)p_next_arg), 10);
+				itoa(tmp, va_arg(ap, int), 10);
         strcpy(p, tmp);
-        p_next_arg += 4;
         p += strlen(tmp);
         break;
       case 'x':
-        itoa(tmp, *((int*)p_next_arg), 16);
+        itoa(tmp, va_arg(ap, int), 16);
         strcpy(p, tmp);
-        p_next_arg += 4;
         p += strlen(tmp);
         break;
       case 's':
-        strcpy(p, p_next_arg);
-        p_next_arg += strlen(tmp);
+        strcpy(p, va_arg(ap, char *));
         p += strlen(tmp);
         break;
       default:
