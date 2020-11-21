@@ -1,6 +1,6 @@
 #include "trap.h"
 
-char buf[128];
+char buf[128] = "12";
 
 int main() {
 /*
