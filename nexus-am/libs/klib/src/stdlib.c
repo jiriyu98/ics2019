@@ -12,34 +12,25 @@ void srand(unsigned int seed) {
 
 void itoa(char *buf, int val, unsigned radix)
 {
-    char   *p;             
-    char   *firstdig;      
-    char   temp;           
-    unsigned   digval;     
-    p = buf;
-    if(val <0)
-    {
-        *p++ = '-';
-        val = (unsigned long)(-(long)val);
-    }
-    firstdig = p; 
-    do{
-        digval = (unsigned)(val % radix);
-        val /= radix;
-       
-        if  (digval > 9)
-            *p++ = (char)(digval - 10 + 'a'); 
-        else
-            *p++ = (char)(digval + '0');      
-    }while(val > 0);
-   
-    *p-- = '\0 ';         
-    do{
-        temp = *p;
-        *p = *firstdig;
-        *firstdig = temp;
-        --p;
-        ++firstdig;        
-    }while(firstdig < p);  
-    return;
+
+	char zm[37]="0123456789abcdefghijklmnopqrstuvwxyz";
+	char aa[100]={0};
+ 
+	int sum=val;
+	char *cp=buf;
+	int i=0;
+ 
+	while(sum>0)
+	{
+		aa[i++]=zm[sum%radix];
+		sum/=radix;
+	}
+ 
+	for(int j=i-1;j>=0;j--)
+	{
+		*cp++=aa[j];
+	}
+	*cp='\0';
+	return;
+
 }
