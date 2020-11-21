@@ -36,7 +36,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         p += strlen(tmp);
         break;
       case 's':
-        strcpy(p, tmp);
+        strcpy(p, p_next_arg);
         p_next_arg += strlen(tmp);
         p += strlen(tmp);
         break;
