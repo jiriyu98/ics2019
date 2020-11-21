@@ -1,11 +1,6 @@
 #include "klib.h"
-#include <stdarg.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
-
-void _puts(char* s){
-	for(int i = 0; i < strlen(s); ++i) _putc(s[i]);
-}
 
 int printf(const char *fmt, ...) {
   va_list arg;
