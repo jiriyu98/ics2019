@@ -14,7 +14,7 @@ int printf(const char *fmt, ...) {
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
 	char* p;
-	char tmp[256];
+	char tmp[256], tmps;
 	for (p = out; *fmt; fmt++){
 	  if (*fmt != '%'){
 	      *p++ = *fmt;
@@ -33,8 +33,9 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         p += strlen(tmp);
         break;
       case 's':
-        strcpy(p, va_arg(ap, char *));
-        p += strlen(tmp);
+        tmps = va_arg(ap, char *);
+				strcpy(p, tmps);
+        p += strlen(tmps);
         break;
       default:
         break;
