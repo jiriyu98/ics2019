@@ -1,8 +1,9 @@
 #include "trap.h"
 
-char buf[128];
+char buf[128] = "12";
 
 int main() {
+/*
 	sprintf(buf, "%s", "Hello world!\n");
 	nemu_assert(strcmp(buf, "Hello world!\n") == 0);
 
@@ -11,6 +12,8 @@ int main() {
 
 	sprintf(buf, "%d + %d = %d\n", 2, 10, 12);
 	nemu_assert(strcmp(buf, "2 + 10 = 12\n") == 0);
+*/
 
+	printf("%s", buf);
 	return 0;
 }
