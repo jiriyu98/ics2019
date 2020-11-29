@@ -1,6 +1,7 @@
 #include <am.h>
 #include <amdev.h>
 #include <nemu.h>
+#include <klib.h>
 
 static inline int min(int x, int y) {
   return (x < y) ? x : y;
