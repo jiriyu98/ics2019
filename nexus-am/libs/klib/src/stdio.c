@@ -108,13 +108,10 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
 	return data.num_chars;
 }
-static inline void _putstr(char *s) {
-}
 
 int sprintf(char *out, const char *fmt, ...) {
 	va_list ap;
 	int ret;
-	
 	va_start(ap, fmt);
 	ret = vsprintf(out, fmt, ap);
 	va_end(ap);
