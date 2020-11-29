@@ -1,7 +1,7 @@
 #include <am.h>
 #include <amdev.h>
 #include <nemu.h>
-#include <klib.h>
+
 static uint32_t boot_time;
 
 size_t __am_timer_read(uintptr_t reg, void *buf, size_t size) {
