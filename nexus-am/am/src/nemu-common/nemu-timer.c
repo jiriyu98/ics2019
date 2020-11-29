@@ -2,15 +2,14 @@
 #include <amdev.h>
 #include <nemu.h>
 #include <klib.h>
-
-static uint32_t boot_time;
+_DEV_TIMER_UPTIME_t uptime_base;
 
 size_t __am_timer_read(uintptr_t reg, void *buf, size_t size) {
   switch (reg) {
     case _DEVREG_TIMER_UPTIME: {
       _DEV_TIMER_UPTIME_t *uptime = (_DEV_TIMER_UPTIME_t *)buf;
       uptime->hi = 0;
-      uptime->lo = inl(RTC_ADDR) / 1000 - boot_time;
+      uptime->lo = inl(RTC_ADDR) - uptime_base.lo;
       return sizeof(_DEV_TIMER_UPTIME_t);
     }
     case _DEVREG_TIMER_DATE: {
@@ -28,5 +27,6 @@ size_t __am_timer_read(uintptr_t reg, void *buf, size_t size) {
 }
 
 void __am_timer_init() {
-	boot_time = inl(RTC_ADDR) / 1000;
+	uptime_base.hi = 0;
+	uptime_base.lo = inl(RTC_ADDR);
 }
