@@ -1,6 +1,7 @@
 #include <am.h>
 #include <amdev.h>
 #include <nemu.h>
+#include <klib.h>
 
 static uint32_t boot_time;
 
