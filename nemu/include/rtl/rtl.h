@@ -147,6 +147,7 @@ static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
+/*
   rtlreg_t msb = 0;
   rtl_msb(&msb, src1, width);
   if (msb)
@@ -181,6 +182,16 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
       }
     }
   }
+*/
+
+  int32_t temp = *src1;
+  switch(width) {
+    case 4: *dest = *src1; return;
+    case 3: temp = temp <<  8; *dest = temp >>  8; return; 
+    case 2: temp = temp << 16; *dest = temp >> 16; return; 
+    case 1: temp = temp << 24; *dest = temp >> 24; return;
+    default: assert(0);
+  }  
 }
 
 static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
