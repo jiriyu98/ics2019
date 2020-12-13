@@ -30,9 +30,6 @@ void writecsr(int i, int32_t val){
 	  case 0x141:
       decinfo.isa.sepc = val;
       break;
-	  case 0x180:
-      decinfo.isa.sepc = val;
-      break;
 	  default:
       assert(0 && "Unfinished writecsr");
 	}
@@ -59,8 +56,6 @@ make_EHelper(system){
 	    rtl_sr(id_dest->reg, &s0, 4);
 	    break;
 		case 0b010:
-		if(decinfo.isa.instr.csr == 0x180)
-			break;
 	    s0 = readcsr(decinfo.isa.instr.csr);
 	    writecsr(decinfo.isa.instr.csr, s0 | id_src->val);
 	    rtl_sr(id_dest->reg, &s0, 4);
