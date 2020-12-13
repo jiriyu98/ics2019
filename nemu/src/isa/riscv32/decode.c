@@ -92,7 +92,6 @@ make_DHelper(st) {
 }
 
 make_DHelper(system) {
-  t0 = 4;
   rtl_add(&decinfo.jmp_pc, &t0, &decinfo.isa.sepc);
   decode_op_r(id_dest, decinfo.isa.instr.rd, false);
   decode_op_r(id_src, decinfo.isa.instr.rs1, true);
