@@ -12,7 +12,6 @@ int32_t readcsr(int i){
 	  case 0x141:
       return decinfo.isa.sepc;
 	  default:
-			printf("%d", i);
       assert(0 && "Unfinished readcsr");
 	}
 }
@@ -41,10 +40,9 @@ make_EHelper(system){
 		/* ecall */
 		case 0b0:
 	    if((decinfo.isa.instr.val & ~(0x7f))==0){
-	        raise_intr(reg_l(17), decinfo.seq_pc - 4);
+	        raise_intr(reg_l(17), decinfo.seq_pc);
 	    }
 	    else if(decinfo.isa.instr.val == 0x10200073){
-	        decinfo.jmp_pc = decinfo.isa.sepc + 4;
 	        decinfo.is_jmp = 1;
 	    }
 	    else{
