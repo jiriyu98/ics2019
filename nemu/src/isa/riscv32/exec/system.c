@@ -40,7 +40,7 @@ make_EHelper(system){
 		/* ecall */
 		case 0b0:
 	    if((decinfo.isa.instr.val & ~(0x7f))==0){
-	        raise_intr(reg_l(17), decinfo.seq_pc);
+	        raise_intr(reg_l(17), decinfo.seq_pc - 4);
 	    }
 	    else if(decinfo.isa.instr.val == 0x10200073){
 	        decinfo.is_jmp = 1;
