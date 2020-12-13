@@ -43,7 +43,6 @@ make_EHelper(system){
 	        raise_intr(reg_l(17), decinfo.seq_pc - 4);
 	    }
 	    else if(decinfo.isa.instr.val == 0x10200073){
-	    	assert("Let me think");
 	        decinfo.is_jmp = 1;
 	    }
 	    else{
