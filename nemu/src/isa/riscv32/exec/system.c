@@ -12,7 +12,7 @@ int32_t readcsr(int i){
 	  case 0x141:
       return decinfo.isa.sepc;
 	  default:
-      assert(0 && "Unfinished readcsr");
+      assert(i && 0 && "Unfinished readcsr");
 	}
 }
 
