@@ -1,5 +1,4 @@
 #include "fs.h"
-
 extern size_t ramdisk_read(void*, size_t, size_t);
 extern size_t ramdisk_write(const void*, size_t, size_t);
 
