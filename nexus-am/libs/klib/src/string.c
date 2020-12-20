@@ -63,6 +63,7 @@ void* memset(void* v,int c,size_t n) {
 }
 
 void* memcpy(void* out, const void* in, size_t n) {
+	assert("haha");
   assert(out - in >= n || out - in >= n);
   size_t i;
   for (i = 0; i < n; ++i)
