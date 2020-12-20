@@ -42,20 +42,20 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 static char dispinfo[128] __attribute__((used)) = {};
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
-    len = sprintf(buf, dispinfo + offset);
+  len = sprintf(buf, dispinfo + offset);
   return len;
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-    int x = (offset/4) % screen_width();
-    int y = (offset/4) / screen_width();
-    draw_sync();
-    draw_rect((uint32_t*)buf, x, y, len/4, 1);
+  int x = (offset/4) % screen_width();
+  int y = (offset/4) / screen_width();
+  draw_sync();
+  draw_rect((uint32_t*)buf, x, y, len/4, 1);
   return len;
 }
 
 size_t fbsync_write(const void *buf, size_t offset, size_t len) {
-    draw_sync();
+  draw_sync();
   return 0;
 }
 
