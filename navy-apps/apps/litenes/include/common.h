@@ -31,7 +31,6 @@ void common_toggle_bitd(dword *variable, byte position);
 void common_modify_bitd(dword *variable, byte position, bool set);
 
 static inline void* memcpy(void *dest, const void *src, size_t n) {
-  assert(0);
   char *csrc = (char*)src, *cdest = (char*)dest;
   for (int i = 0; i < n; i ++) {
     cdest[i] = csrc[i];
