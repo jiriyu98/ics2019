@@ -51,7 +51,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       }
       ramdisk_read((void*)Phdr.p_vaddr, Phdr.p_offset, Phdr.p_filesz);
   }
-
+  Log("3");
   // Log("entry: %x", Ehdr.e_entry);
   return Ehdr.e_entry;
 }
