@@ -17,6 +17,7 @@ extern void isa_vaddr_write(uint32_t, uint32_t, int);
 static uintptr_t loader(PCB *pcb, const char *filename) {
   int fd = fs_open(filename, 0, 0);
   if (fd == -1) {
+    assert("why?");
     panic("loader: can't open file %s!", filename);
   }
 
