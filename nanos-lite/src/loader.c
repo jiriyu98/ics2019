@@ -50,6 +50,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
           memset((void *)(Phdr.p_vaddr + Phdr.p_filesz), 0, Phdr.p_memsz - Phdr.p_filesz);
       }
   }
+  Log("type : %d", Ehdr.e_type);
+  Log("machine : %d", Ehdr.e_machine);
+  Log("version : %d", Ehdr.e_version);
+  Log("entry : %d", Ehdr.e_entry);
   return Ehdr.e_entry;
 }
 
