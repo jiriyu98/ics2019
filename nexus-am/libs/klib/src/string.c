@@ -67,8 +67,10 @@ void* memcpy(void* out, const void* in, size_t n) {
   size_t i;
   for (i = 0; i < n; ++i){
     ((uint8_t *)out)[i] = ((uint8_t *)in)[i];
-    printf("0x%x\n", ((uint8_t *)out)[i]);
-  	printf("0x%x\n", ((uint8_t *)in)[i]);
+  }
+  for (i = 0; i < n; ++i){
+  	printf("0x");
+    printf("%x", ((uint8_t *)out)[i]);
   }
   return out;
 }
