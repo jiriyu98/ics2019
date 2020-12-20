@@ -71,8 +71,8 @@ void* memcpy(void* out, const void* in, size_t n) {
   for (i = 0; i < n; ++i){
   	printf("0x");
     printf("%x", ((uint8_t *)out)[i]);
-    printf("\n");
   }
+  printf("\n");
   return out;
 }
 
