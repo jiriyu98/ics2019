@@ -5,7 +5,7 @@ extern _Context* do_syscall(_Context*);
 static _Context* do_event(_Event e, _Context* c) {
   switch (e.event) {
       case _EVENT_YIELD:
-          // printf("Self trap!\n");
+          printf("Self trap!\n");
           break;
       case _EVENT_SYSCALL:
           //printf("Syscall!\n");
