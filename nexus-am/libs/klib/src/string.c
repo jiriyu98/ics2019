@@ -62,12 +62,12 @@ void* memset(void* v,int c,size_t n) {
 	return dst;
 }
 
-void* memcpy(void* dst, const void* src, size_t n) {
-  assert(dst - src >= n || dst - src >= n);
+void* memcpy(void* out, const void* in, size_t n) {
+  assert(out - in >= n || out - in >= n);
   size_t i;
   for (i = 0; i < n; ++i)
-    ((int8_t *)dst)[i] = ((int8_t *)src)[i];
-  return dst;
+    ((uint8_t *)out)[i] = ((uint8_t *)in)[i];
+  return out;
 }
 
 int memcmp(const void* s1, const void* s2, size_t n){
