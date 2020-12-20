@@ -3,7 +3,6 @@
 #define MAX_NR_PROC 4
 
 extern void naive_uload(PCB*, const char*);
-
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB *current = NULL;
@@ -25,9 +24,9 @@ void init_proc() {
   switch_boot_pcb();
 
   Log("Initializing processes...");
+  naive_uload(NULL, "/bin/init");
 
   // load program here
-  naive_uload(NULL, "/bin/dummy");
 
 }
 

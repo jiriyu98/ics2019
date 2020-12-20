@@ -25,6 +25,16 @@ int do_read(int fd, void*buf, size_t count){
 }
 
 int do_write(int fd, const void*buf, size_t count){
+    /*
+    if(fd==1 || fd==2){
+        for(int i = 0;i < count;i++){
+            _putc(((char*)buf)[i]);
+        }
+        return count;
+    }
+    if(fd==0)
+        return 0;
+    */
     int res = fs_write(fd, buf, count);
     return res;
 }
