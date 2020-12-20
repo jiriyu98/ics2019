@@ -63,7 +63,7 @@ void* memset(void* v,int c,size_t n) {
 }
 
 void* memcpy(void* out, const void* in, size_t n) {
-  assert(out - in >= n || out - in >= n);
+  assert(out - in >= n);
   size_t i;
   for (i = 0; i < n; ++i)
     ((uint8_t *)out)[i] = ((uint8_t *)in)[i];
