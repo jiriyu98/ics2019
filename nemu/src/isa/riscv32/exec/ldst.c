@@ -4,9 +4,11 @@ make_EHelper(ld) {
   rtl_lm(&s0, &id_src->addr, decinfo.width);
   rtl_sr(id_dest->reg, &s0, 4);
 
+  printf("load : 0x%x", s0);
+
   switch (decinfo.width) {
     case 4: print_asm_template2(lw); break;
-    case 2: print_asm_template2(lhu); printf("lhu: 0x%x", s0); break;
+    case 2: print_asm_template2(lhu); break;
     case 1: print_asm_template2(lbu); break;
     default: assert(0);
   }
