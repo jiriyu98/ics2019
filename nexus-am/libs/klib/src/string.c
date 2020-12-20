@@ -66,9 +66,9 @@ void* memcpy(void* out, const void* in, size_t n) {
   assert(out - in >= n);
   size_t i;
   for (i = 0; i < n; ++i){
-  	printf("%s\n", (char *)out);
-  	printf("%s\n", (char *)in);
     ((uint8_t *)out)[i] = ((uint8_t *)in)[i];
+    printf("%d\n", ((uint8_t *)out)[i]);
+  	printf("%d\n", ((uint8_t *)in)[i]);
   }
   return out;
 }
