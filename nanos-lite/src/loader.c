@@ -15,29 +15,31 @@ extern void isa_vaddr_write(uint32_t, uint32_t, int);
 #endif
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  Elf_Ehdr Ehdr;
   int fd = fs_open(filename, 0, 0);
-  fs_lseek(fd, 0, SEEK_SET);
-  fs_read(fd, &Ehdr, sizeof(Ehdr));
-  //ramdisk_read(&Ehdr, 0, sizeof(Ehdr));
-  for(int i = 0; i < Ehdr.e_phnum;i++){
-      Elf_Phdr Phdr;
-      fs_lseek(fd, Ehdr.e_phoff + i*Ehdr.e_phentsize, SEEK_SET);
-      //printf("res:%d\n", res);
-      fs_read(fd, &Phdr, sizeof(Phdr));
-      //ramdisk_read(&Phdr, Ehdr.e_phoff + i*Ehdr.e_phentsize, sizeof(Phdr));
-      if(!(Phdr.p_type & PT_LOAD)){
-          continue;
-      }
-      fs_lseek(fd, Phdr.p_offset, SEEK_SET);
-      fs_read(fd, (void*)Phdr.p_vaddr, Phdr.p_filesz);
-      for(unsigned int i = Phdr.p_filesz; i < Phdr.p_memsz;i++){
-          ((char*)Phdr.p_vaddr)[i] = 0;
-      }
-      //ramdisk_read((void*)Phdr.p_vaddr, Phdr.p_offset, Phdr.p_filesz);
+  if (fd == -1) {
+    panic("loader: can't open file %s!", filename);
   }
 
-  return Ehdr.e_entry;
+  Elf_Ehdr elf_header;
+  fs_read(fd, (void *)&elf_header, sizeof(Elf_Ehdr));
+  if (memcmp(elf_header.e_ident, ELFMAG, SELFMAG))
+    panic("file %s ELF format error!", filename);
+
+  for (size_t i = 0; i < elf_header.e_phnum; ++i) {
+    Elf_Phdr phdr;
+    fs_lseek(fd, elf_header.e_phoff + elf_header.e_phentsize * i, SEEK_SET);
+    fs_read(fd, (void *)&phdr, elf_header.e_phentsize);
+    if (phdr.p_type == PT_LOAD) {
+      fs_lseek(fd, phdr.p_offset, SEEK_SET);
+      fs_read(fd, (void *)phdr.p_vaddr, phdr.p_filesz);
+      memset((void *)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz);
+    }
+  }
+
+  fs_close(fd);
+  printf("%s: %x\n", filename, elf_header.e_entry);
+
+  return elf_header.e_entry;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
