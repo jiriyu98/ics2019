@@ -49,13 +49,13 @@ static Finfo file_table[] __attribute__((used)) = {
 #define NR_FILES (sizeof(file_table) / sizeof(file_table[0]))
 
 int fs_open(const char *pathname, int flags, int mode){
+  return 0;
     for(int i = 3; i < NR_FILES;i++){
         if(strcmp(pathname, file_table[i].name) == 0){
             return i;
         }
     }
-    // assert(0 && "Can't find file");
-    return 0;
+    assert(0 && "Can't find file");
 }
 
 size_t fs_read(int fd, void *buf, size_t len){
