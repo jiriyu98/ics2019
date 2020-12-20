@@ -50,6 +50,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
           memset((void *)(Phdr.p_vaddr + Phdr.p_filesz), 0, Phdr.p_memsz - Phdr.p_filesz);
       }
   }
+  Log("eshoff : ", Ehdr.e_shoff);
   return Ehdr.e_entry;
 }
 
