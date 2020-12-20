@@ -16,6 +16,7 @@ extern void isa_vaddr_write(uint32_t, uint32_t, int);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   int fd = fs_open(filename, 0, 0);
+  Log("fd = %d", fd);
 
   Elf_Ehdr elf_header;
   fs_read(fd, (void *)&elf_header, sizeof(Elf_Ehdr));
