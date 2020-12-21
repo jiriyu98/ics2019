@@ -40,7 +40,6 @@ extern void isa_vaddr_write(uint32_t, uint32_t, int);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr Ehdr;
-  init_ramdisk();
   ramdisk_read((void*)&Ehdr, 0, sizeof(Ehdr));
   if (memcmp(Ehdr.e_ident, ELFMAG, SELFMAG))
     panic("file %s ELF format error!", filename);
