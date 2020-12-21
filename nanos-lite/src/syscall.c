@@ -51,10 +51,10 @@ _Context* do_syscall(_Context *c) {
           naive_uload(NULL,"/bin/init");
           _halt(a[1]);
           break;
-      case SYS_yield:
-          _yield();
-          c->GPRx = 0;
-          break;
+      // case SYS_yield:
+      //     _yield();
+      //     c->GPRx = 0;
+      //     break;
       case SYS_write:
           c->GPRx = do_write(a[1], (void*)(a[2]), a[3]);
           break;
