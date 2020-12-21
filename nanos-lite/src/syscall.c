@@ -25,7 +25,7 @@ static inline int sys_read(int fd, void*buf, size_t count){
 }
 
 static inline int sys_write(int fd, const void*buf, size_t count){
-    /*
+    
     if(fd==1 || fd==2){
         for(int i = 0;i < count;i++){
             _putc(((char*)buf)[i]);
@@ -34,9 +34,9 @@ static inline int sys_write(int fd, const void*buf, size_t count){
     }
     if(fd==0)
         return 0;
-    */
-    int res = fs_write(fd, buf, count);
-    return res;
+    
+    // int res = fs_write(fd, buf, count);
+    // return res;
 }
 
 static inline int sys_lseek(int fd, size_t offset, int whence){
