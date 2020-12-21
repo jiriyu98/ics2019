@@ -6,17 +6,17 @@
 extern void naive_uload(PCB *pcb, const char *filename);
 static int programBrk;
 
-int do_open(const char*path, int flags, int mode){
+static inline int sys_open(const char*path, int flags, int mode){
     int res = fs_open(path, flags, mode);
     return res;
 }
 
-int do_close(int fd){
+static inline int sys_close(int fd){
     int res = fs_close(fd);
     return res;
 }
 
-int do_read(int fd, void*buf, size_t count){
+static inline int sys_read(int fd, void*buf, size_t count){
     if(fd>=0 && fd<=2){
         return 0;
     }
@@ -24,7 +24,7 @@ int do_read(int fd, void*buf, size_t count){
     return res;
 }
 
-int do_write(int fd, const void*buf, size_t count){
+static inline int sys_write(int fd, const void*buf, size_t count){
     /*
     if(fd==1 || fd==2){
         for(int i = 0;i < count;i++){
@@ -39,12 +39,12 @@ int do_write(int fd, const void*buf, size_t count){
     return res;
 }
 
-size_t do_lseek(int fd, size_t offset, int whence){
+static inline int sys_lseek(int fd, size_t offset, int whence){
     size_t res = fs_lseek(fd, offset, whence);
     return res;
 }
 
-int do_brk(int addr){
+static inline int sys_brk(int addr){
     programBrk = addr;
     return 0;
 }
@@ -66,22 +66,22 @@ _Context* do_syscall(_Context *c) {
           c->GPRx = 0;
           break;
       case SYS_write:
-          c->GPRx = do_write(a[1], (void*)(a[2]), a[3]);
+          c->GPRx = sys_write(a[1], (void*)(a[2]), a[3]);
           break;
       case SYS_read:
-          c->GPRx = do_read(a[1], (void*)(a[2]), a[3]);
+          c->GPRx = sys_read(a[1], (void*)(a[2]), a[3]);
           break;
       case SYS_lseek:
-          c->GPRx = do_lseek(a[1], a[2], a[3]);
+          c->GPRx = sys_lseek(a[1], a[2], a[3]);
           break;
       case SYS_open:
-          c->GPRx = do_open((const char *)a[1], a[2], a[3]);
+          c->GPRx = sys_open((const char *)a[1], a[2], a[3]);
           break;
       case SYS_close:
-          c->GPRx = do_close(a[1]);
+          c->GPRx = sys_close(a[1]);
           break;
       case SYS_brk:
-          c->GPRx = do_brk(a[1]);
+          c->GPRx = sys_brk(a[1]);
           break;
       // case SYS_execve:
       //     printf("%s\n", a[1]);
