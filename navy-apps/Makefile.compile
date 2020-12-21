@@ -35,7 +35,7 @@ else ifeq ($(VME), enable)
 else ifeq ($(ISA), mips32)
   LDFLAGS += -Ttext-segment=0x83000000
 else ifeq ($(ISA), riscv32)
-  LDFLAGS += -Ttext-segment=0x83000000
+  LDFLAGS += -Ttext-segment=0x80100000
 else
   LDFLAGS += -Ttext-segment=0x3000000
 endif
