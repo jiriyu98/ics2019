@@ -40,6 +40,7 @@ static char dispinfo[128] __attribute__((used)) = {};
 
 
 size_t get_dispinfo_size() {
+  printf("dispinfo_len: %d\n", strlen(dispinfo));
   return strlen(dispinfo);
 }
 
