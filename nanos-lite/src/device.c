@@ -28,9 +28,10 @@ size_t events_read(void *buf, size_t offset, size_t len) {
     int keycode = read_key();
     if(keycode != _KEY_NONE){
       if (keycode & 0x8000) {
-        len = snprintf(buf, len, "kd %s\n", keyname[keycode & ~0x8000]);
+        keycode ^= 0x8000;
+        len = snprintf(buf, len, "kd %s\n", keyname[keycode]);
       } else if(!((keycode & ~0x8000) == _KEY_NONE)){
-        len = snprintf(buf, len, "ku %s\n", keyname[keycode & ~0x8000]);
+        len = snprintf(buf, len, "ku %s\n", keyname[keycode]);
       }
     } else{
       len = sprintf(buf, "t %u\n", uptime());
