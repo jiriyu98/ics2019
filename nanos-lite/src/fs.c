@@ -61,6 +61,7 @@ int fs_open(const char *pathname, int flags, int mode){
 }
 
 size_t fs_read(int fd, void *buf, size_t len){
+  Log("read");
   fd_check(fd);
   size_t sz;
   if (file_table[fd].read == NULL) {
@@ -80,6 +81,7 @@ size_t fs_read(int fd, void *buf, size_t len){
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
+  Log("write");
   fd_check(fd);
   size_t sz;
   if (file_table[fd].write == NULL) {
