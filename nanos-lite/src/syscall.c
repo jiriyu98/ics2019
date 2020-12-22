@@ -7,42 +7,23 @@ extern void naive_uload(PCB *pcb, const char *filename);
 static int programBrk;
 
 static inline int sys_open(const char*path, int flags, int mode){
-    int res = fs_open(path, flags, mode);
-    return res;
+    return fs_open(path, flags, mode);
 }
 
 static inline int sys_close(int fd){
-    int res = fs_close(fd);
-    return res;
+    return fs_close(fd);
 }
 
-static inline int sys_read(int fd, void*buf, size_t count){
-    if(fd>=0 && fd<=2){
-        return 0;
-    }
-    int res = fs_read(fd, buf, count);
-    return res;
+static inline int sys_read(int fd, void*buf, size_t len){
+    return fs_read(fd, buf, len);
 }
 
-static inline int sys_write(int fd, const void*buf, size_t count){
-    int temp = 0;
-    if(fd==1 || fd==2){
-        for(int i = 0;i < count;i++){
-            _putc(((char*)buf)[i]);
-            temp = i;
-        }
-        return temp;
-    }
-    if(fd==0)
-        return 0;
-    
-    // int res = fs_write(fd, buf, count);
-    // return res;
+static inline int sys_write(int fd, const void*buf, size_t len){
+    return fs_write(fd, buf, len);
 }
 
 static inline int sys_lseek(int fd, size_t offset, int whence){
-    size_t res = fs_lseek(fd, offset, whence);
-    return res;
+    return fs_lseek(fd, offset, whence);
 }
 
 static inline int sys_brk(int addr){
