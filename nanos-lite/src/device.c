@@ -27,11 +27,11 @@ static const char *keyname[256] __attribute__((used)) = {
 size_t events_read(void *buf, size_t offset, size_t len) {
     int keycode = read_key();
     if (keycode & 0x8000) {
-      len = sprintf(buf, "kd %s\n", keyname[keycode & ~0x8000]);
+      len = snprintf(buf, len, "kd %s\n", keyname[keycode & ~0x8000]);
     } else if(!((keycode & ~0x8000) == _KEY_NONE)){
-      len = sprintf(buf, "ku %s\n", keyname[keycode & ~0x8000]);
+      len = snprintf(buf, len, "ku %s\n", keyname[keycode & ~0x8000]);
     } else{
-      len = sprintf(buf,"t %d\n", uptime());
+      len = snprintf(buf, len, "t %d\n", uptime());
     }
     return len;
 }
@@ -39,7 +39,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 static char dispinfo[128] __attribute__((used)) = {};
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
-    len = sprintf(buf, dispinfo + offset);
+    len = snprintf(buf, len, dispinfo + offset);
   return len;
 }
 
@@ -47,7 +47,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
     int x = (offset/4) % screen_width();
     int y = (offset/4) / screen_width();
     draw_sync();
-    draw_rect((uint32_t*)buf, x, y, len/4, 1);
+    draw_rect((void *)buf, x, y, len/4, 1);
   return len;
 }
 
