@@ -14,7 +14,6 @@ int main() {
         break;
       }
     }
-    printf("let's see buf:%s\n", buf);
 
     int is_time = buf[0] == 't';
     time += is_time;
