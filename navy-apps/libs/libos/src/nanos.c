@@ -67,10 +67,10 @@ int _write(int fd, void *buf, size_t count) {
 }
 
 void *_sbrk(intptr_t increment) {
-  // extern uint32_t end;
+  extern uint32_t _end;
   static uint32_t programBrk = 0;
   if (programBrk == 0) {
-    programBrk = &end;
+    programBrk = &_end;
     _syscall_(SYS_brk, programBrk, 0, 0);
   }
   char tmp[50];
@@ -80,10 +80,6 @@ void *_sbrk(intptr_t increment) {
   if (_syscall_(SYS_brk, programBrk + increment, 0, 0) == 0) {
     uint32_t old_break = programBrk;
     programBrk += increment;
-    char tmp[50];
-    sprintf(tmp, "brk:%x, incre:%x\n", programBrk, increment);
-    tmp[50] = '\0';
-    _write(1, tmp, 100);
     return (void *)old_break;
   } else {
     return (void *)-1;
