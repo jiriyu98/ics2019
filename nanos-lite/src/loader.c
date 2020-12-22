@@ -23,17 +23,17 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     panic("file %s ELF format error!", filename);
 
   for (size_t i = 0; i < Ehdr.e_phnum; ++i) {
-    Elf_Phdr phdr;
+    Elf_Phdr Phdr;
     fs_lseek(fd, Ehdr.e_phoff + Ehdr.e_phentsize * i, SEEK_SET);
-    fs_read(fd, (void *)&phdr, Ehdr.e_phentsize);
-    if (phdr.p_type == PT_LOAD) {
-      fs_lseek(fd, phdr.p_offset, SEEK_SET);
-      fs_read(fd, (void *)phdr.p_vaddr, phdr.p_filesz);
-      memset((void *)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz);
+    fs_read(fd, (void *)&Phdr, Ehdr.e_phentsize);
+    if (Phdr.p_type == PT_LOAD) {
+      fs_lseek(fd, Phdr.p_offset, SEEK_SET);
+      fs_read(fd, (void *)Phdr.p_vaddr, Phdr.p_filesz);
+      memset((void *)(Phdr.p_vaddr + Phdr.p_filesz), 0, Phdr.p_memsz - Phdr.p_filesz);
     }
   }
 
-  fs_close(fd);
+  // fs_close(fd);
 
   return Ehdr.e_entry;
 }
