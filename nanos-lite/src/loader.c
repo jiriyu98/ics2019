@@ -17,15 +17,15 @@ extern void isa_vaddr_write(uint32_t, uint32_t, int);
 static uintptr_t loader(PCB *pcb, const char *filename) {
   int fd = fs_open(filename, 0, 0);
 
-  Elf_Ehdr elf_header;
-  fs_read(fd, (void *)&elf_header, sizeof(Elf_Ehdr));
-  if (memcmp(elf_header.e_ident, ELFMAG, SELFMAG))
+  Elf_Ehdr Ehdr;
+  fs_read(fd, (void *)&Ehdr, sizeof(Elf_Ehdr));
+  if (memcmp(Ehdr.e_ident, ELFMAG, SELFMAG))
     panic("file %s ELF format error!", filename);
 
-  for (size_t i = 0; i < elf_header.e_phnum; ++i) {
+  for (size_t i = 0; i < Ehdr.e_phnum; ++i) {
     Elf_Phdr phdr;
-    fs_lseek(fd, elf_header.e_phoff + elf_header.e_phentsize * i, SEEK_SET);
-    fs_read(fd, (void *)&phdr, elf_header.e_phentsize);
+    fs_lseek(fd, Ehdr.e_phoff + Ehdr.e_phentsize * i, SEEK_SET);
+    fs_read(fd, (void *)&phdr, Ehdr.e_phentsize);
     if (phdr.p_type == PT_LOAD) {
       fs_lseek(fd, phdr.p_offset, SEEK_SET);
       fs_read(fd, (void *)phdr.p_vaddr, phdr.p_filesz);
@@ -35,7 +35,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   fs_close(fd);
 
-  return elf_header.e_entry;
+  return Ehdr.e_entry;
 }
 
 // static uintptr_t loader(PCB *pcb, const char *filename) {
