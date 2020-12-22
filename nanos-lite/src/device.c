@@ -31,7 +31,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
     printf("keycode & ~0x8000 = 0x%x\n", keycode & ~0x8000);
     printf("keycode & 0x8000 = 0x%x\n", keycode & 0x8000);
     if((keycode & ~0x8000) == _KEY_NONE){
-      printf("_KEY_NONE = 0x%x\n", _KEY_NONE);
+      printf("_KEY_NONE = %d\n", uptime());
         len = sprintf(buf,"t %d\n", uptime());
     }
     else if (keycode & 0x8000) {
