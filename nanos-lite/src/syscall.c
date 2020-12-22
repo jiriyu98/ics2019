@@ -30,7 +30,7 @@ static inline int sys_write(int fd, const void*buf, size_t count){
         for(int i = 0;i < count;i++){
             _putc(((char*)buf)[i]);
             temp = i;
-            //Log("%s", buf);
+            Log("%s", buf);
         }
         return temp;
     }
