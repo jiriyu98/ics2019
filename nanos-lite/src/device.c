@@ -25,15 +25,14 @@ static const char *keyname[256] __attribute__((used)) = {
 };
 
 size_t events_read(void *buf, size_t offset, size_t len) {
-    int keycode = read_key();
-    if (keycode & 0x8000) {
-      len = sprintf(buf, "kd %s\n", keyname[keycode & ~0x8000]);
-    } else if(!((keycode & ~0x8000) == _KEY_NONE)){
-      len = sprintf(buf, "ku %s\n", keyname[keycode & ~0x8000]);
-    } else{
-      len = sprintf(buf,"t %d\n", uptime());
-    }
-    return len;
+  int key = read_key();
+  bool keydown = false;
+  if (key & 0x8000) {
+  keydown = true;
+  key ^= 0x8000;
+  }
+  if (key == _KEY_NONE) return snprintf(buf, len, "t %u\n", uptime());
+  else return snprintf(buf, len, "%s %s\n", keydown ? "kd" : "ku", keyname[key]);
 }
 
 static char dispinfo[128] __attribute__((used)) = {};
