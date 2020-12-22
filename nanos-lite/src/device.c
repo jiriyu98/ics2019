@@ -44,7 +44,7 @@ size_t get_dispinfo_size() {
 }
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
-    len = snprintf(buf, len, dispinfo + offset);
+  len = snprintf(buf, len, dispinfo + offset);
   return len;
 }
 
