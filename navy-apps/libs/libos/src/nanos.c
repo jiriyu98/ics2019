@@ -74,7 +74,7 @@ void *_sbrk(intptr_t increment) {
     _syscall_(SYS_brk, programBrk, 0, 0);
   }
   char tmp[100];
-  sprintf(tmp, "brk:%d, incre:%d\n", programBrk, increment);
+  sprintf(tmp, "brk:%x, incre:%x\n", programBrk, increment);
   _write(1, tmp, 100);
   if (_syscall_(SYS_brk, programBrk + increment, 0, 0) == 0) {
     uint32_t old_break = programBrk;
