@@ -125,4 +125,8 @@ void init_fs() {
   // TODO: initialize the size of /dev/fb
   int fb = fs_open("/dev/fb", 0, 0);
   file_table[fb].size = screen_width()*screen_height()*4;
+  fb = fs_open("/dev/fbsync", 0, 0);
+  file_table[fb].size = 1;
+  fb = fs_open("/proc/dispinfo", 0, 0);
+  file_table[fb].size = screen_width()*screen_height()*4;
 }
