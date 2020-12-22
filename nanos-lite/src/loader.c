@@ -33,27 +33,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     }
   }
 
-  // fs_close(fd);
+  fs_close(fd);
 
   return Ehdr.e_entry;
 }
-
-// static uintptr_t loader(PCB *pcb, const char *filename) {
-//   Elf_Ehdr Ehdr;
-//   ramdisk_read((void*)&Ehdr, 0, sizeof(Ehdr));
-//   if (memcmp(Ehdr.e_ident, ELFMAG, SELFMAG))
-//     panic("file %s ELF format error!", filename);
-
-//   for(int i = 0; i < Ehdr.e_phnum; i++){
-//       Elf_Phdr Phdr;
-//       ramdisk_read((void*)&Phdr, Ehdr.e_phoff + i*Ehdr.e_phentsize, sizeof(Phdr));
-//       if(Phdr.p_type == PT_LOAD){
-//           ramdisk_read((void*)Phdr.p_vaddr, Phdr.p_offset, Phdr.p_filesz);
-//           memset((void *)(Phdr.p_vaddr + Phdr.p_filesz), 0, Phdr.p_memsz - Phdr.p_filesz);
-//       }
-//   }
-//   return Ehdr.e_entry;
-// }
 
 void naive_uload(PCB *pcb, const char *filename) {
   uintptr_t entry = loader(pcb, filename);
