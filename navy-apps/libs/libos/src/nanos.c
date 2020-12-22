@@ -70,7 +70,7 @@ void *_sbrk(intptr_t increment) {
   extern uint32_t _end;
   static uint32_t programBrk = 0;
   if (programBrk == 0) {
-    programBrk = _end;
+    programBrk = &_end;
     _syscall_(SYS_brk, programBrk, 0, 0);
   }
   if (_syscall_(SYS_brk, programBrk + increment, 0, 0) == 0) {
