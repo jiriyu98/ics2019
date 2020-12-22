@@ -24,7 +24,7 @@ void init_proc() {
   switch_boot_pcb();
 
   Log("Initializing processes...");
-  naive_uload(NULL, "/bin/events");
+  naive_uload(NULL, "/bin/bmptest");
 
   // load program here
 
