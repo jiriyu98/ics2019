@@ -25,6 +25,7 @@ static const char *keyname[256] __attribute__((used)) = {
 };
 
 size_t events_read(void *buf, size_t offset, size_t len) {
+  _yield();
     int keycode = read_key();
     if (keycode & 0x8000) {
       len = sprintf(buf, "kd %s\n", keyname[keycode & ~0x8000]);
