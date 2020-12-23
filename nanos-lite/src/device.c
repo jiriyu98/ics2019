@@ -10,9 +10,9 @@ size_t __am_input_read(uintptr_t reg, void *buf, size_t size);
 size_t __am_timer_read(uintptr_t reg, void *buf, size_t size);
 
 size_t serial_write(const void *buf, size_t offset, size_t len) {
-  size_t success = 0;
-  while (success < len) _putc(*((char *)buf + success++));
-  return success;
+  for (size_t i = 0; i < len; ++i)
+    _putc(((char *)buf)[i]);
+  return len;
 }
 
 #define NAME(key) \
@@ -46,7 +46,9 @@ size_t get_dispinfo_size() {
 }
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
-  if (len + offset > 128) len = 128 - offset;
+  if (len + offset > 128){
+    len = 128 - offset;
+  }
   strncpy(buf, dispinfo + offset, len);
   return len;
 }
