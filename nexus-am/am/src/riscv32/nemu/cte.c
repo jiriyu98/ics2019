@@ -47,7 +47,14 @@ int _cte_init(_Context*(*handler)(_Event, _Context*)) {
 }
 
 _Context *_kcontext(_Area stack, void (*entry)(void *), void *arg) {
-  return NULL;
+  _Context *context = stack.end - sizeof(_Context);
+  memset(context, 0x00, sizeof(_Context));
+  context->cause = 8;
+  // context->status = NULL;
+  context->epc = (uint32_t)entry;
+  context->as = NULL;
+
+  return context;
 }
 
 void _yield() {
