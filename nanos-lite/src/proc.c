@@ -26,6 +26,7 @@ void init_proc() {
   // Log("Initializing processes...");
   // naive_uload(NULL, "/bin/init");
   context_kload(&pcb[0], (void *)hello_fun);
+  Log("hello_fun: %x", (uint32_t)(void *)hello_fun);
   switch_boot_pcb();
 }
 
