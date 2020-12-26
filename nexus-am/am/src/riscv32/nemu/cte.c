@@ -31,6 +31,9 @@ _Context* __am_irq_handle(_Context *c) {
     }
   }
 
+  extern void __am_switch(_Context *c);
+  __am_switch(next);
+  
   return next;
 }
 
