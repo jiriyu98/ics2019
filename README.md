@@ -25,4 +25,4 @@ The following subprojects/components are included. Some of them are not fully im
 
  Alao, thanks to github, I have some references there. Hope you guys can find it helpful too.
 
- If you have any problems, please feel free to cantact my by email. [jyyu@hust.edu.cn](jyyu@hust.edu.cn)
+ If you have any problems, please feel free to contact my by email. [jyyu@hust.edu.cn](jyyu@hust.edu.cn)
