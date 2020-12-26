@@ -31,9 +31,6 @@ _Context* __am_irq_handle(_Context *c) {
     }
   }
 
-  extern void __am_switch(_Context *c);
-  __am_switch(next);
-  
   return next;
 }
 
@@ -52,7 +49,7 @@ int _cte_init(_Context*(*handler)(_Event, _Context*)) {
 _Context *_kcontext(_Area stack, void (*entry)(void *), void *arg) {
   _Context *context = stack.end - sizeof(_Context);
   memset(context, 0x00, sizeof(_Context));
-  context->cause = 8;
+  // context->cause = 8;
   // context->status = NULL;
   context->epc = (uint32_t)entry;
   context->as = NULL;
