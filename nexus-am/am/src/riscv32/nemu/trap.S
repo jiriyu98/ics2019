@@ -39,7 +39,7 @@ __am_asm_trap:
   mv a0, sp
   jal __am_irq_handle
 
-  mv sp, a1 # my add
+  mv sp, a0 # my add
 
   lw t1, OFFSET_STATUS(sp)
   lw t2, OFFSET_EPC(sp)
