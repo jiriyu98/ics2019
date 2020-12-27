@@ -30,12 +30,9 @@ void init_proc() {
 }
 
 _Context* schedule(_Context *prev) {
-  // save the context pointer
-  current->cp = prev;
+  // init_proc()
+  context_uload(&pcb[1], "/bin/init");
 
-  // always select pcb[0] as the new process
-  current = &pcb[0];
-
-  // then return the new context
-  return current->cp;
+  // schedule()
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
 }
