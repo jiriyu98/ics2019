@@ -46,10 +46,12 @@ uint32_t isa_vaddr_read(vaddr_t addr, int len) {
       else
         return *(uint32_t *)byte;
   	}else{
+  		Log("2111swsw");
   	  paddr_t paddr = page_translate(addr);
       return paddr_read(paddr, len);
   	}
   }
+  Log("swsw");
   return paddr_read(addr, len);
 }
 
@@ -64,7 +66,6 @@ void isa_vaddr_write(vaddr_t addr, uint32_t data, int len) {
       for (int i = 0; i < len; i++)
         isa_vaddr_write(addr + i, byte[i], 1);
   	}else{
-  	  Log("swsw");
   	  paddr_t paddr = page_translate(addr);
       return paddr_write(paddr, data, len);
   	}
