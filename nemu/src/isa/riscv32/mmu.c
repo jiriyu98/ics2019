@@ -31,7 +31,6 @@ typedef uint32_t PDE;
 #define PGADDR(d, t, o) ((uint32_t)((d) << PDXSHFT | (t) << PTXSHFT | (o)))
 
 static inline paddr_t page_translate(vaddr_t va) {
-  assert(0);
   paddr_t ptab = paddr_read(cpu.satp.ppn * 4096 + 4 * PDX(va), 4);
   ptab = ptab & 0x3fffff;
   paddr_t page = paddr_read(ptab * 4096 + 4 * PTX(va), 4);
