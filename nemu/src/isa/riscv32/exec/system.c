@@ -11,6 +11,9 @@ int32_t readcsr(int i){
       return decinfo.isa.sstatus;
 	  case 0x141:
       return decinfo.isa.sepc;
+      case 0x180:
+      return cpu.satp.val;
+      break;
 	  default:
       assert(0 && "Unfinished readcsr");
 	}
@@ -29,6 +32,9 @@ void writecsr(int i, int32_t val){
       break;
 	  case 0x141:
       decinfo.isa.sepc = val;
+      break;
+      case 0x180:
+      cpu.satp.val = val;
       break;
 	  default:
       assert(0 && "Unfinished writecsr");

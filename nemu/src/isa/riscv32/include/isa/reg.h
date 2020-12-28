@@ -12,6 +12,15 @@ typedef struct {
 
   vaddr_t pc;
 
+  union {
+    struct {
+      uint32_t mode      : 1;
+      uint32_t asid      : 9;
+      uint32_t ppn       :22;
+    };
+    uint32_t val;
+  }satp;
+
 } CPU_state;
 
 static inline int check_reg_index(int index) {
