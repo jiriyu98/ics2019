@@ -18,6 +18,15 @@ typedef uint32_t PDE;
 #define PTX(va)     (((uint32_t)(va) >> PTXSHFT) & 0x3ff)
 #define OFF(va)     ((uint32_t)(va) & 0xfff)
 
+// Address in page table or page directory entry
+#define PTE_ADDR(pte)   (((uint32_t)(pte) & ~0x3ff) << 2)
+
+// construct virtual address from indexes and offset
+#define PGADDR(d, t, o) ((uint32_t)((d) << PDXSHFT | (t) << PTXSHFT | (o)))
+
+
+
+
 static inline paddr_t page_translate(vaddr_t va) {
   paddr_t ptab = paddr_read(cpu.satp.ppn * 4096 + sizeof(PDE) * PDX(va), sizeof(PDE));
 
