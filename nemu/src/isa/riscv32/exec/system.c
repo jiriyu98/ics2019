@@ -66,6 +66,7 @@ make_EHelper(system){
 	    s0 = readcsr(decinfo.isa.instr.csr);
 	    writecsr(decinfo.isa.instr.csr, s0 | id_src->val);
 	    rtl_sr(id_dest->reg, &s0, 4);
+	    printf("csr: %x\n", cpu.satp.val);
 	    break;
 		default:
 	    assert(0 && "Unfinished system op");
