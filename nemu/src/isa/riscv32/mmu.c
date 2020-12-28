@@ -34,6 +34,8 @@ static inline paddr_t page_translate(vaddr_t va) {
 
   paddr_t page = paddr_read(ptab * 4096 + sizeof(PTE) * PTX(va), sizeof(PTE));
 
+  page = page & 0x3fffff;
+
   return (page * 4096 | OFF(va));
 }
 
