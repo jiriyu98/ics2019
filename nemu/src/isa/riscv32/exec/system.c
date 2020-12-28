@@ -63,11 +63,9 @@ make_EHelper(system){
 	    break;
 	    /* csrrs */
 		case 0b010:
-		Log("swsw");
 	    s0 = readcsr(decinfo.isa.instr.csr);
 	    writecsr(decinfo.isa.instr.csr, s0 | id_src->val);
 	    rtl_sr(id_dest->reg, &s0, 4);
-	    Log("csr: %x\n", cpu.satp.val);
 	    break;
 		default:
 	    assert(0 && "Unfinished system op");

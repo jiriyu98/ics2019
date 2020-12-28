@@ -1,5 +1,11 @@
 #include "nemu.h"
 
+#define PTE_V 0x01
+#define PTE_R 0x02
+#define PTE_W 0x04
+#define PTE_X 0x08
+#define PTE_U 0x10
+
 // Page directory and page table constants
 #define NR_PDE    1024    // # directory entries per page directory
 #define NR_PTE    1024    // # PTEs per page table
@@ -24,13 +30,10 @@ typedef uint32_t PDE;
 // construct virtual address from indexes and offset
 #define PGADDR(d, t, o) ((uint32_t)((d) << PDXSHFT | (t) << PTXSHFT | (o)))
 
-
-
-
 static inline paddr_t page_translate(vaddr_t va) {
-  paddr_t ptab = paddr_read(cpu.satp.ppn * 4096 + sizeof(PDE) * PDX(va), sizeof(PDE));
+  paddr_t ptab = paddr_read(cpu.satp.ppn * 4096 + 4 * PDX(va), 4);
   ptab = ptab & 0x3fffff;
-  paddr_t page = paddr_read(ptab * 4096 + sizeof(PTE) * PTX(va), sizeof(PTE));
+  paddr_t page = paddr_read(ptab * 4096 + 4 * PTX(va), 4);
   page = page & 0x3fffff;
   return page * 4096 + OFF(va);
 }
