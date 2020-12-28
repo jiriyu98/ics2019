@@ -36,7 +36,7 @@ static inline paddr_t page_translate(vaddr_t va) {
 
   page = page & 0x3fffff;
 
-  return (page * 4096 | OFF(va));
+  return page * 4096 + OFF(va);
 }
 
 uint32_t isa_vaddr_read(vaddr_t addr, int len) {
