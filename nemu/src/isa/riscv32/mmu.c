@@ -30,7 +30,7 @@ typedef uint32_t PDE;
 static inline paddr_t page_translate(vaddr_t va) {
   paddr_t ptab = paddr_read(cpu.satp.ppn * 4096 + sizeof(PDE) * PDX(va), sizeof(PDE));
 
-  ptab = ptab & 0x2fffff;
+  ptab = ptab & 0x3fffff;
 
   paddr_t page = paddr_read(ptab * 4096 + sizeof(PTE) * PTX(va), sizeof(PTE));
 
