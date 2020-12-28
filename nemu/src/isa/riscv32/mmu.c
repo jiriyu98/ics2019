@@ -53,8 +53,9 @@ uint32_t isa_vaddr_read(vaddr_t addr, int len) {
   	  paddr_t paddr = page_translate(addr);
       return paddr_read(paddr, len);
   	}
+  }else{
+  	  return paddr_read(addr, len);
   }
-  return paddr_read(addr, len);
 }
 
 void isa_vaddr_write(vaddr_t addr, uint32_t data, int len) {
@@ -71,6 +72,7 @@ void isa_vaddr_write(vaddr_t addr, uint32_t data, int len) {
   	  paddr_t paddr = page_translate(addr);
       return paddr_write(paddr, data, len);
   	}
+  }else{
+  	 return paddr_write(addr, data, len);
   }
-  return paddr_write(addr, data, len);
 }
