@@ -29,13 +29,9 @@ typedef uint32_t PDE;
 
 static inline paddr_t page_translate(vaddr_t va) {
   paddr_t ptab = paddr_read(cpu.satp.ppn * 4096 + sizeof(PDE) * PDX(va), sizeof(PDE));
-
   ptab = ptab & 0x3fffff;
-
   paddr_t page = paddr_read(ptab * 4096 + sizeof(PTE) * PTX(va), sizeof(PTE));
-
   page = page & 0x3fffff;
-
   return page * 4096 + OFF(va);
 }
 
@@ -68,6 +64,7 @@ void isa_vaddr_write(vaddr_t addr, uint32_t data, int len) {
       for (int i = 0; i < len; i++)
         isa_vaddr_write(addr + i, byte[i], 1);
   	}else{
+  	  Log("swsw");
   	  paddr_t paddr = page_translate(addr);
       return paddr_write(paddr, data, len);
   	}
