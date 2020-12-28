@@ -63,6 +63,7 @@ make_EHelper(system){
 	    break;
 	    /* csrrs */
 		case 0b010:
+		Log("swsw");
 	    s0 = readcsr(decinfo.isa.instr.csr);
 	    writecsr(decinfo.isa.instr.csr, s0 | id_src->val);
 	    rtl_sr(id_dest->reg, &s0, 4);
