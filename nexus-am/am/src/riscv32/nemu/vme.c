@@ -82,7 +82,6 @@ void __am_switch(_Context *c) {
 }
 
 int _map(_AddressSpace *as, void *va, void *pa, int prot) {
-  printf("0x%x  0x%x\n", va, pa);
   uint32_t pdx = PDX(va);
   uint32_t ptx = PTX(va);
   PDE pde = ((PDE *)as->ptr)[pdx];
@@ -91,11 +90,13 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
     PDE new_pde = (uintptr_t)pt | PTE_V;
     ((PDE *)as->ptr)[pdx] = new_pde;
   }
+    printf("0x%x  0x%x\n", va, pa);
   pde = ((PDE *)as->ptr)[pdx];
   PTE *page_table = (PTE*)PTE_ADDR(pde);
   if(!(page_table[ptx] & PTE_V)){
     page_table[ptx] = (uint32_t)pa | PTE_V;
   }
+    printf("0x%x  0x%x\n", va, pa);
   return 0;
 }
 
