@@ -41,16 +41,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       int count=0;
       for(size_t i=0,sz = Phdr.p_memsz;i<sz;i+=PGSIZE){
           size_t read_bytes = ((sz-i)>=PGSIZE) ? PGSIZE : (sz-i);
-          //printf("%x\n",read_bytes);
           paddr = new_page(1);
           count++;
-          //printf("%x\n",paddr);
-          printf("%x  %x\n",vaddr,paddr);
+          printf("0x%x  0x%x\n",vaddr,paddr);
           _map(&pcb->as,vaddr,paddr,0);
           fs_read(fd,paddr,read_bytes);
           pcb->max_brk = (uintptr_t)vaddr+PGSIZE;
           vaddr+=PGSIZE;
-          //memset((void*)paddr+Phdr.p_filesz,0,(Phdr.p_memsz-Phdr.p_filesz));
         }
         memset((void*)paddr-(count-1)*PGSIZE+Phdr.p_filesz,0,(Phdr.p_memsz-Phdr.p_filesz));
 #else
