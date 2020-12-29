@@ -82,6 +82,22 @@ void __am_switch(_Context *c) {
 }
 
 int _map(_AddressSpace *as, void *va, void *pa, int prot) {
+  PDE *pdir = as->ptr;
+  PTE *pptab = pdir + PDX(va) * 4;
+
+  if (!(*pptab & PTE_V)) {  // 如果页表不存在则分配一个页目录
+    *pptab = (uint32_t)pgalloc_usr(1);
+    memset((void *)*pptab, 0, PGSIZE);
+    *pptab = *pptab | PTE_V;
+  }
+
+  PDE *ptab = &(((PDE *)PTE_ADDR(*ptab))[PTX(va)]);
+  if (*ptab & PTE_V) {  // 如果页已经存在则报错
+    printf("ERROR:vme _map(): page map already exists! %x\n", *ptab);
+    assert(0); 
+  }
+  *ptab = PTE_ADDR(pa) | PTE_V;
+
   return 0;
 }
 
@@ -89,7 +105,7 @@ _Context *_ucontext(_AddressSpace *as, _Area ustack, _Area kstack, void *entry, 
   _Context *context = ustack.end - sizeof(_Context);
   memset(context, 0x00, sizeof(_Context));
   context->epc = (uint32_t)entry;
-  context->as = NULL;
+  context->as = as;
 
   return context;
 }
