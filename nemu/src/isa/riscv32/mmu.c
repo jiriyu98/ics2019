@@ -53,7 +53,6 @@ uint32_t isa_vaddr_read(vaddr_t addr, int len) {
         return *(uint32_t *)byte;
   	}else{
   	  paddr_t paddr = page_translate(addr);
-  	  assert(0);
       return paddr_read(paddr, len);
   	}
   }else{
