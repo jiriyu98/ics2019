@@ -14,6 +14,12 @@ extern void isa_vaddr_write(uint32_t, uint32_t, int);
 # define Elf_Phdr Elf32_Phdr
 #endif
 
+#define min(x, y)         ((x) < (y) ? (x) : (y))
+#define PDX(va)     (((uint32_t)(va) >> 22) & 0x3ff)
+#define PTX(va)     (((uint32_t)(va) >> 12) & 0x3ff)
+#define OFF(va)     ((uint32_t)(va) & 0xfff)
+#define PTE_ADDR(pte)   (((uint32_t)(pte) & ~0x3ff) << 2)
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
   int fd = fs_open(filename, 0, 0);
 
@@ -28,8 +34,42 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     fs_read(fd, (void *)&Phdr, Ehdr.e_phentsize);
     if (Phdr.p_type == PT_LOAD) {
       fs_lseek(fd, Phdr.p_offset, SEEK_SET);
+#ifdef HAS_VME
+      void *vaddr = (void *)Phdr.p_vaddr;
+      void *paddr;
+      int32_t left_file_size = Phdr.p_filesz;
+
+      paddr = new_page(1);
+      _map(&pcb->as, vaddr, paddr, 0);
+      uint32_t page_write_size = min(left_file_size, PTE_ADDR((uint32_t)vaddr + PGSIZE) - (uint32_t)vaddr);
+      fs_read(fd, (void *)(PTE_ADDR(paddr) | OFF(vaddr)), page_write_size);
+      left_file_size -= page_write_size;
+      vaddr += page_write_size;
+      for (; left_file_size > 0; left_file_size -= page_write_size, vaddr += page_write_size) {
+        assert(((uint32_t)vaddr & 0xfff) == 0);
+        paddr = new_page(1);
+        _map(&pcb->as, vaddr, paddr, 0);
+        page_write_size = min(left_file_size, PGSIZE);
+        fs_read(fd, paddr, page_write_size);
+      }
+
+      left_file_size = Phdr.p_memsz - Phdr.p_filesz;
+      if (((uint32_t)vaddr & 0xfff) != 0) {
+        page_write_size = min(left_file_size, PTE_ADDR((uint32_t)vaddr + PGSIZE) - (uint32_t)vaddr);
+        memset((void *)(PTE_ADDR(paddr) | OFF(vaddr)), 0, page_write_size);
+        left_file_size -= page_write_size;
+        vaddr += page_write_size;
+      }
+      for (page_write_size = PGSIZE; left_file_size > 0; left_file_size -= page_write_size, vaddr += page_write_size) {
+        assert(((uint32_t)vaddr & 0xfff) == 0);
+        paddr = new_page(1);
+        _map(&pcb->as, vaddr, paddr, 0);
+        memset(paddr, 0, page_write_size);
+      }
+#else
       fs_read(fd, (void *)Phdr.p_vaddr, Phdr.p_filesz);
       memset((void *)(Phdr.p_vaddr + Phdr.p_filesz), 0, Phdr.p_memsz - Phdr.p_filesz);
+#endif
     }
   }
 
