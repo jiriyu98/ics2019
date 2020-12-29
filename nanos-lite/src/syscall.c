@@ -40,8 +40,8 @@ _Context* do_syscall(_Context *c) {
 
   switch (a[0]) {
       case SYS_exit:
-          naive_uload(NULL,"/bin/init");
-          // _halt(a[1]);
+          // naive_uload(NULL,"/bin/init");
+          _halt(a[1]);
           break;
       case SYS_yield:
           _yield();
