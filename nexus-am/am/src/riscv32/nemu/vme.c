@@ -94,7 +94,7 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   PTE *page_table = (PTE*)PTE_ADDR(pde);
   printf("0x%x\n", page_table);
   if(!(page_table[ptx] & PTE_V)){
-    page_table[ptx] = (uint32_t)pa | PTE_V;
+    page_table[ptx] = ((uint32_t)pa) & ~0x3ff | PTE_V;
   }
   return 0;
 }
