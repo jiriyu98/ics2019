@@ -88,12 +88,11 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   if(!(pde & PTE_V)){
     PDE *pt = (PDE*)(pgalloc_usr(1));
     PDE new_pde = (uintptr_t)pt | PTE_V;
-    ((PDE*)as->ptr)[pdx] = new_pde;
+    ((PDE *)as->ptr)[pdx] = new_pde;
   }
   pde = ((PDE *)as->ptr)[pdx];
   PTE *page_table = (PTE*)PTE_ADDR(pde);
   if(!(page_table[ptx] & PTE_V)){
-    //pa = pgalloc_usr(1);
     page_table[ptx] = (uint32_t)pa | PTE_V;
   }
   return 0;
