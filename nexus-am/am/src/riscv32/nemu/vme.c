@@ -92,6 +92,7 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
     ((PDE *)as->ptr)[pdx] = new_pde;
   }
   pde = ((PDE *)as->ptr)[pdx];
+  printf("0x%x\n", pde);
   PTE *page_table = (PTE*)PTE_ADDR(pde);
   printf("0x%x\n", page_table[ptx]);
   if(!(page_table[ptx] & PTE_V)){
