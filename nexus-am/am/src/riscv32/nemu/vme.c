@@ -82,22 +82,20 @@ void __am_switch(_Context *c) {
 }
 
 int _map(_AddressSpace *as, void *va, void *pa, int prot) {
-  uint32_t pdx = PDX(va);
-  uint32_t ptx = PTX(va);
-  PDE pde = ((PDE *)as->ptr)[pdx];
-  printf("0x%x\n", as->ptr);
-  if(!(pde & PTE_V)){
-    PDE *pt = (PDE*)(pgalloc_usr(1));
-    PDE new_pde = ((uintptr_t)pt & ~0x3ff) | PTE_V;
-    ((PDE *)as->ptr)[pdx] = new_pde;
+  PTE *pdir = (void *)as->ptr;
+  PDE *pptab = &pdir[PDX(va)];
+
+  if (!(*pptab & PTE_V)) {  
+    *pptab = (uint32_t)pgalloc_usr(1);
+    memset((void *)*pptab, 0, PGSIZE);
+    *pptab = *pptab | PTE_V;
   }
-  pde = ((PDE *)as->ptr)[pdx];
-  printf("0x%x\n", pde);
-  PTE *page_table = (PTE*)PTE_ADDR(pde);
-  printf("0x%x\n", page_table[ptx]);
-  if(!(page_table[ptx] & PTE_V)){
-    page_table[ptx] = (((uint32_t)pa) & ~0x3ff) | PTE_V;
+
+  PDE *ptab = &(((PDE *)PTE_ADDR(*pptab))[PTX(va)]);
+  if (!(*ptab & PTE_V)) { 
+    *ptab = PTE_ADDR(pa) | PTE_V;
   }
+
   return 0;
 }
 
