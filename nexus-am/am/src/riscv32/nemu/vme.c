@@ -83,7 +83,7 @@ void __am_switch(_Context *c) {
 
 int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   PDE *pdir = as->ptr;
-  PTE *pptab = pdir + PDX(va) * 4;
+  PDE *pptab = &pdir[PDX(va)];
 
   if (!(*pptab & PTE_V)) {  // 如果页表不存在则分配一个页目录
     *pptab = (uint32_t)pgalloc_usr(1);
