@@ -87,7 +87,6 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
 
   if (!(*pptab & PTE_V)) {  
     *pptab = (uint32_t)pgalloc_usr(1);
-    memset((void *)*pptab, 0, PGSIZE);
     *pptab = *pptab | PTE_V;
   }
 
