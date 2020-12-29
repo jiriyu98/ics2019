@@ -82,6 +82,7 @@ void __am_switch(_Context *c) {
 }
 
 int _map(_AddressSpace *as, void *va, void *pa, int prot) {
+  printf("0x%x  0x%x\n", va, pa);
   uint32_t pdx = PDX(va);
   uint32_t ptx = PTX(va);
   PDE pde = ((PDE *)as->ptr)[pdx];
