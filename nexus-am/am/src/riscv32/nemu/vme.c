@@ -85,7 +85,7 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   uint32_t pdx = PDX(va);
   uint32_t ptx = PTX(va);
   PDE pde = ((PDE *)as->ptr)[pdx];
-  printf("0x%x\n", pde);
+  printf("0x%x\n", as->ptr);
   if(!(pde & PTE_V)){
     PDE *pt = (PDE*)(pgalloc_usr(1));
     PDE new_pde = ((uintptr_t)pt & ~0x3ff) | PTE_V;
