@@ -91,8 +91,8 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
     ((PDE *)as->ptr)[pdx] = new_pde;
   }
   pde = ((PDE *)as->ptr)[pdx];
-    printf("0x%x  0x%x\n", va, pa);
   PTE *page_table = (PTE*)PTE_ADDR(pde);
+    printf("0x%x  0x%x\n", va, pa);
   if(!(page_table[ptx] & PTE_V)){
     page_table[ptx] = (uint32_t)pa | PTE_V;
   }
