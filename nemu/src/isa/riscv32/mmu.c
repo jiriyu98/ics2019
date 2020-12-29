@@ -32,10 +32,12 @@ typedef uint32_t PDE;
 
 static inline paddr_t page_translate(vaddr_t va) {
   paddr_t ptab = paddr_read(cpu.satp.ppn * 4096 + 4 * PDX(va), 4);
-  ptab = (ptab & 0xfffffc00) >> 10;
-  paddr_t page = paddr_read(ptab * 4096 + 4 * PTX(va), 4);
-  page = (page & 0xfffffc00) >> 10;
-  return page * 4096 + OFF(va);
+  if(!(ptab & PTE_V) | (!(ptab & PTE_R) && (ptab & PTE_W))){
+  	printf("PTE is invalid!\n");
+  	assert(0);
+  }
+  paddr_t page = paddr_read(PTE_ADDR(ptab) + 4 * PTX(va), 4);
+  return PTE_ADDR(page) + OFF(va);
 }
 
 uint32_t isa_vaddr_read(vaddr_t addr, int len) {
