@@ -36,7 +36,6 @@ static inline paddr_t page_translate(vaddr_t va) {
   	printf("PTE is invalid!\n");
   	assert(0);
   }
-  assert(0);
   paddr_t page = paddr_read(PTE_ADDR(ptab) + 4 * PTX(va), 4);
   return PTE_ADDR(page) + OFF(va);
 }
