@@ -34,6 +34,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     fs_read(fd, (void *)&Phdr, Ehdr.e_phentsize);
     if (Phdr.p_type == PT_LOAD) {
       fs_lseek(fd, Phdr.p_offset, SEEK_SET);
+      
 #ifdef HAS_VME
       void *vaddr = (void *)Phdr.p_vaddr;
       void *paddr;
