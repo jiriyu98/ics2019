@@ -27,7 +27,7 @@ int mm_brk(uintptr_t brk, intptr_t increment) {
       va += PGSIZE;
       left -= PGSIZE;
     }
-    current->max_brk=brk+increment;
+    current->max_brk = brk+increment;
   }
   return 0;
 }
