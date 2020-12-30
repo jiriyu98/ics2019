@@ -1,4 +1,5 @@
 #include "memory.h"
+#include "proc.h"
 
 static void *pf = NULL;
 
@@ -15,19 +16,19 @@ void free_page(void *p) {
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk, intptr_t increment) {
-  // if(current->max_brk==0){
-  //   current->max_brk=brk;
-  // }
-  // if(brk+increment > current->max_brk){
-  //   void *va=(void*)((current->max_brk >> 12)<<12);
-  //   int left=brk+increment-current->max_brk;
-  //   while(left>0){
-  //     _map(&current->as, (void*)va, new_page(1), 0);
-  //     va += PGSIZE;
-  //     left -= PGSIZE;
-  //   }
-  //   current->max_brk=brk+increment;
-  // }
+  if(current->max_brk==0){
+    current->max_brk=brk;
+  }
+  if(brk+increment > current->max_brk){
+    void *va = (void*)((current->max_brk >> 12)<<12);
+    int left = brk+increment-current->max_brk;
+    while(left>0){
+      _map(&current->as, (void*)va, new_page(1), 0);
+      va += PGSIZE;
+      left -= PGSIZE;
+    }
+    current->max_brk=brk+increment;
+  }
   return 0;
 }
 

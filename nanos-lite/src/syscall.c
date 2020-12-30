@@ -4,7 +4,6 @@
 #include "syscall.h"
 
 extern void naive_uload(PCB *pcb, const char *filename);
-static int programBrk;
 
 static inline int sys_open(const char*path, int flags, int mode){
     return fs_open(path, flags, mode);
@@ -26,10 +25,10 @@ static inline int sys_lseek(int fd, size_t offset, int whence){
     return fs_lseek(fd, offset, whence);
 }
 
-static inline int sys_brk(int addr){
-    programBrk = addr;
-    return 0;
-}
+// static inline int sys_brk(int addr){
+//     mm_brk(c->GPR2,c->GPR3);
+//     return 0;
+// }
 
 _Context* do_syscall(_Context *c) {
   uintptr_t a[4];
@@ -63,7 +62,7 @@ _Context* do_syscall(_Context *c) {
           c->GPRx = sys_close(a[1]);
           break;
       case SYS_brk:
-          c->GPRx = sys_brk(a[1]);
+          c->GPRx = mm_brk(a[1], a[2]);
           break;
       case SYS_execve:
           naive_uload(NULL, (const char*)a[1]);
