@@ -85,7 +85,7 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   PTE *pdir = (void *)as->ptr;
   printf("pdir: 0x%x\n", pdir);
   PDE *pptab = &pdir[PDX(va)];
-  printf("pptab: 0x%d\n", pptab);
+  printf("pptab: 0x%x\n", pptab);
 
   if (!(*pptab & PTE_V)) {  
     printf("??????\n");
