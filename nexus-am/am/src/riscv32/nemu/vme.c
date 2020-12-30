@@ -96,7 +96,8 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
     *ptab = PTE_ADDR(pa) | PTE_V;
   }
 
-  if(PTE_ADDR(*ptab) + OFF(va) != pa){
+  if(PTE_ADDR(*ptab) + OFF(va) == pa){
+    printf("PTE_ADDR(*ptab) + OFF(va) : 0x%x\n", PTE_ADDR(*ptab) + OFF(va));
     printf("what happen\n");
   }
 
