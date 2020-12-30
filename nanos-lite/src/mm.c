@@ -20,7 +20,7 @@ int mm_brk(uintptr_t brk, intptr_t increment) {
     current->max_brk=brk;
   }
   if(brk+increment > current->max_brk){
-    void *va = (void*)((current->max_brk >> 12)<<12);
+    void *va = (void*)(current->max_brk <<12);
     int left = brk+increment-current->max_brk;
     while(left>0){
       _map(&current->as, (void*)va, new_page(1), 0);
