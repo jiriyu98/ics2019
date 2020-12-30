@@ -82,7 +82,7 @@ void __am_switch(_Context *c) {
 }
 
 int _map(_AddressSpace *as, void *va, void *pa, int prot) {
-  if(OFF(va) != OFF(pa)){
+  if(OFF(va) == OFF(pa)){
     printf("what????\n");
   }
   PTE *pdir = (void *)as->ptr;
