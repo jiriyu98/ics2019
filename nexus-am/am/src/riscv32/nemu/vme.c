@@ -91,7 +91,7 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   }
   PDE *ptab = &(((PDE *)PTE_ADDR(*pptab))[PTX(va)]);
   printf("PPN = 0x%x\n", PTE_ADDR(pa));
-  printf("%x\n", ptab);
+  printf("%x\n", *ptab);
   if (!(*ptab & PTE_V)) { 
     *ptab = PTE_ADDR(pa) | PTE_V;
   }
