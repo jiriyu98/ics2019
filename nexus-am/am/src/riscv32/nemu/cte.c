@@ -56,7 +56,6 @@ _Context *_kcontext(_Area stack, void (*entry)(void *), void *arg) {
   _Context *context = stack.end - sizeof(_Context);
   memset(context, 0x00, sizeof(_Context));
   context->epc = (uint32_t)entry;
-  context->as = NULL;
 
   return context;
 }
