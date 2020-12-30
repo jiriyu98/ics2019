@@ -90,7 +90,7 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   if (!(*pptab & PTE_V)) {  
     printf("??????\n");
     *pptab = (uint32_t)pgalloc_usr(1);
-    *pptab = *pptab | PTE_V;
+    *pptab = (*pptab >> 12) << 10| PTE_V;
   }
   PDE *ptab = &(((PDE *)PTE_ADDR(*pptab))[PTX(va)]);
   printf("ptab: 0x%x\n", ptab);
