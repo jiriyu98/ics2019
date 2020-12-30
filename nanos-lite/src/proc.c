@@ -25,10 +25,10 @@ void hello_fun(void *arg) {
 
 void init_proc() {
   // context_kload(&pcb[0], (void *)hello_fun);
-  switch_boot_pcb();
   // context_kload(&pcb[0], (void *)hello_fun);
   // context_uload(&pcb[1], "/bin/init");
   context_uload(&pcb[0], "/bin/dummy");
+  switch_boot_pcb();
 }
 
 _Context* schedule(_Context *prev) {
