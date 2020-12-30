@@ -87,6 +87,7 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   PDE *pptab = &pdir[PDX(va)];
 
   if (!(*pptab & PTE_V)) {  
+    printf("??????\n");
     *pptab = (uint32_t)pgalloc_usr(1);
     *pptab = *pptab | PTE_V;
   }
