@@ -82,34 +82,34 @@ void __am_switch(_Context *c) {
 }
 
 int _map(_AddressSpace *as, void *va, void *pa, int prot) {
-  uint32_t pdx = PDX(va);
-  uint32_t ptx = PTX(va);
-  PDE pde = ((PDE *)as->ptr)[pdx];
-  if((pde & PTE_V) == 0){
-    PDE *pt = (PDE*)(pgalloc_usr(1));
-    pt = ((uint32_t)pt >> 12) << 10;
-    PDE new_pde = (uintptr_t)pt | PTE_V;
-    ((PDE*)as->ptr)[pdx] = new_pde;
-  }
-  pde = ((PDE *)as->ptr)[pdx];
-  PTE *page_table = (PTE*) PTE_ADDR(pde);
-  if((page_table[ptx] & PTE_V) == 0){
-    page_table[ptx] = (((uint32_t)pa>> 12)<< 10) | PTE_V;
-  }
-  return 0;
-  // PTE *pdir = (void *)as->ptr;
-  // PDE *pptab = &pdir[PDX(va)];
-
-  // if (!(*pptab & PTE_V)) {  
-  //   *pptab = (uint32_t)pgalloc_usr(1);
-  //   *pptab = (*pptab >> 12) << 10| PTE_V;
+  // uint32_t pdx = PDX(va);
+  // uint32_t ptx = PTX(va);
+  // PDE pde = ((PDE *)as->ptr)[pdx];
+  // if((pde & PTE_V) == 0){
+  //   PDE *pt = (PDE*)(pgalloc_usr(1));
+  //   pt = ((uint32_t)pt >> 12) << 10;
+  //   PDE new_pde = (uintptr_t)pt | PTE_V;
+  //   ((PDE*)as->ptr)[pdx] = new_pde;
   // }
-  // PDE *ptab = &(((PDE *)PTE_ADDR(*pptab))[PTX(va)]);
-  // if (!(*ptab & PTE_V)) { 
-  //   *ptab = (((uint32_t)pa >> 12) << 10) | PTE_V;
+  // pde = ((PDE *)as->ptr)[pdx];
+  // PTE *page_table = (PTE*) PTE_ADDR(pde);
+  // if((page_table[ptx] & PTE_V) == 0){
+  //   page_table[ptx] = (((uint32_t)pa>> 12)<< 10) | PTE_V;
   // }
-
   // return 0;
+  PTE *pdir = (void *)as->ptr;
+  PDE *pptab = &pdir[PDX(va)];
+
+  if (!(*pptab & PTE_V)) {  
+    *pptab = (uint32_t)pgalloc_usr(1);
+    *pptab = (*pptab >> 12) << 10| PTE_V;
+  }
+  PDE *ptab = &(((PDE *)PTE_ADDR(*pptab))[PTX(va)]);
+  if (!(*ptab & PTE_V)) { 
+    *ptab = (((uint32_t)pa >> 12) << 10) | PTE_V;
+  }
+
+  return 0;
 }
 
 _Context *_ucontext(_AddressSpace *as, _Area ustack, _Area kstack, void *entry, void *args) {
