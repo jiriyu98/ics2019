@@ -36,20 +36,43 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       fs_lseek(fd, Phdr.p_offset, SEEK_SET);
 
 #ifdef HAS_VME
+      // 为用户进程申请虚存空间
       void *vaddr = (void *)Phdr.p_vaddr;
       void *paddr;
-      int count=0;
-      for(size_t i=0,sz = Phdr.p_memsz;i<sz;i+=PGSIZE){
-          size_t read_bytes = ((sz-i)>=PGSIZE) ? PGSIZE : (sz-i);
-          paddr = new_page(1);
-          count++;
-          printf("0x%x  0x%x\n",vaddr,paddr);
-          _map(&pcb->as,vaddr,paddr,0);
-          fs_read(fd,paddr,read_bytes);
-          pcb->max_brk = (uintptr_t)vaddr+PGSIZE;
-          vaddr += PGSIZE;
-        }
-        memset((void*)paddr-(count-1)*PGSIZE+Phdr.p_filesz,0,(Phdr.p_memsz-Phdr.p_filesz));
+      int32_t left_file_size = Phdr.p_filesz;
+
+      // 这里注意在映射后由于没有修改CR3寄存器，所以现在的映射还没有启用，在
+      // fs_read和memset时要对物理地址进行修改而不是虚拟地址
+
+      // 处理第一页 (第一页可能不是页对齐)
+      paddr = new_page(1);
+      _map(&pcb->as, vaddr, paddr, 0);
+      uint32_t page_write_size = min(left_file_size, PTE_ADDR((uint32_t)vaddr + PGSIZE) - (uint32_t)vaddr);
+      fs_read(fd, (void *)(PTE_ADDR(paddr) | OFF(vaddr)), page_write_size);
+      left_file_size -= page_write_size;
+      vaddr += page_write_size;
+      for (; left_file_size > 0; left_file_size -= page_write_size, vaddr += page_write_size) {
+        assert(((uint32_t)vaddr & 0xfff) == 0);
+        paddr = new_page(1);
+        _map(&pcb->as, vaddr, paddr, 0);
+        page_write_size = min(left_file_size, PGSIZE);
+        fs_read(fd, paddr, page_write_size);
+      }
+
+      // 将进程剩下的地址空间赋值为0
+      left_file_size = Phdr.p_memsz - Phdr.p_filesz;
+      if (((uint32_t)vaddr & 0xfff) != 0) {
+        page_write_size = min(left_file_size, PTE_ADDR((uint32_t)vaddr + PGSIZE) - (uint32_t)vaddr);
+        memset((void *)(PTE_ADDR(paddr) | OFF(vaddr)), 0, page_write_size);
+        left_file_size -= page_write_size;
+        vaddr += page_write_size;
+      }
+      for (page_write_size = PGSIZE; left_file_size > 0; left_file_size -= page_write_size, vaddr += page_write_size) {
+        assert(((uint32_t)vaddr & 0xfff) == 0);
+        paddr = new_page(1);
+        _map(&pcb->as, vaddr, paddr, 0);
+        memset(paddr, 0, page_write_size);
+      }
 #else
       fs_read(fd, (void *)Phdr.p_vaddr, Phdr.p_filesz);
       memset((void *)(Phdr.p_vaddr + Phdr.p_filesz), 0, Phdr.p_memsz - Phdr.p_filesz);
