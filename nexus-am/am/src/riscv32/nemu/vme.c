@@ -82,9 +82,6 @@ void __am_switch(_Context *c) {
 }
 
 int _map(_AddressSpace *as, void *va, void *pa, int prot) {
-  if(OFF(va) == OFF(pa)){
-    printf("what????\n");
-  }
   PTE *pdir = (void *)as->ptr;
   PDE *pptab = &pdir[PDX(va)];
 
@@ -97,6 +94,10 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   printf("%x\n", *ptab);
   if (!(*ptab & PTE_V)) { 
     *ptab = PTE_ADDR(pa) | PTE_V;
+  }
+
+  if(PTE_ADDR(*ptab) + OFF(va) != pa){
+    printf("what happen\n");
   }
 
   return 0;
