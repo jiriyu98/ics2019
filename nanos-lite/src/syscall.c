@@ -4,6 +4,7 @@
 #include "syscall.h"
 
 extern void naive_uload(PCB *pcb, const char *filename);
+extern int mm_brk(uintptr_t brk, intptr_t increment);  
 
 static inline int sys_open(const char*path, int flags, int mode){
     return fs_open(path, flags, mode);
