@@ -91,7 +91,7 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   }
   PDE *ptab = &(((PDE *)PTE_ADDR(*pptab))[PTX(va)]);
   if (!(*ptab & PTE_V)) { 
-    *ptab = (((uint32_t)pa) << 10) | PTE_V;
+    *ptab = (((uint32_t)pa >> 12) << 10) | PTE_V;
   }
 
   return 0;
