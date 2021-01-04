@@ -3,9 +3,9 @@
 
 int main() {
   write(1, "Hello World!\n", 13);
+    printf("o?\n");
   int i = 2;
   volatile int j = 0;
-  printf("o?\n");
   while (1) {
     j ++;
     if (j == 10000) {
