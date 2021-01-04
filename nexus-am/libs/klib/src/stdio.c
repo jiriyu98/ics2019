@@ -103,7 +103,6 @@ static inline int _print(char **out, const char *fmt, va_list ap) {
 }
 
 int printf(const char *fmt, ...) {
-  _putc('?');
   va_list ap;
   va_start(ap, fmt);
   int cnt = _print(NULL, fmt, ap);
