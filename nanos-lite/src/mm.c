@@ -23,7 +23,6 @@ int mm_brk(uintptr_t brk, intptr_t increment) {
     void *va = (void*)(current->max_brk);
     int left = brk+increment-current->max_brk;
     while(left>0){
-      va = (void *)PGROUNDUP((uintptr_t)va);
       _map(&current->as, (void*)va, new_page(1), 0);
       va += PGSIZE;
       left -= PGSIZE;
