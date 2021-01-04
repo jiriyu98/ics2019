@@ -9,7 +9,7 @@ int main() {
     j ++;
     if (j == 10000) {
       write(1, "Hello World!\n", 13);
-      // printf("Hello World from Navy-apps for the %dth time!\n", i ++);
+      printf("Hello World from Navy-apps for the %dth time!\n", i ++);
       j = 0;
     }
   }
