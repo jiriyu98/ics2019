@@ -3,8 +3,8 @@
 
 int main() {
   write(1, "Hello World!\n", 13);
-   write(1, "Hello World!\n", 13);
   int i = 2;
+   write(1, "Hello World!\n", 13);
   volatile int j = 0;
   while (1) {
     j ++;
