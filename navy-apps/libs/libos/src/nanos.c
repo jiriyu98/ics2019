@@ -78,6 +78,7 @@ void *_sbrk(intptr_t increment) {
     programBrk += increment;
     return (void *)old_break;
   } else {
+    assert(0);
     return (void *)-1;
   }
 }
