@@ -76,6 +76,7 @@ void context_kload(PCB *pcb, void *entry) {
 }
 
 void context_uload(PCB *pcb, const char *filename) {
+  memset(pcb, 0, sizeof(PCB)); 
   _protect(&pcb->as);
   uintptr_t entry = loader(pcb, filename);
 
