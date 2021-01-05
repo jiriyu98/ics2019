@@ -10,6 +10,7 @@ int main() {
     if (j == 10000) {
       write(1, "Hello World!\n", 13);
       int x = printf("Hello World from Navy-apps for the %dth time!\n", i ++);
+      printf("%d\n", x);
       j = 0;
     }
   }
