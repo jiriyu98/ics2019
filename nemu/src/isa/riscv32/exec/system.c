@@ -4,13 +4,13 @@ extern void raise_intr(uint32_t, vaddr_t);
 int32_t readcsr(int i){
 	switch(i){
 	  case 0x105:
-      return decinfo.isa.stvec;
+      return cpu.stvec.val;
 	  case 0x142:
-      return decinfo.isa.scause;
+      return cpu.scause.val;
 	  case 0x100:
-      return decinfo.isa.sstatus;
+      return cpu.sstatus.val;
 	  case 0x141:
-      return decinfo.isa.sepc;
+      return cpu.sepc.val;
       case 0x180:
       return cpu.satp.val;
       break;
@@ -22,16 +22,16 @@ int32_t readcsr(int i){
 void writecsr(int i, int32_t val){
 	switch(i){
 	  case 0x105:
-      decinfo.isa.stvec = val;
+      cpu.stvec.val = val;
       break;
 	  case 0x142:
-      decinfo.isa.scause = val;
+      cpu.scause.val = val;
       break;
 	  case 0x100:
-      decinfo.isa.sstatus = val;
+      cpu.sstatus.val = val;
       break;
 	  case 0x141:
-      decinfo.isa.sepc = val;
+      cpu.sepc.val = val;
       break;
       case 0x180:
       cpu.satp.val = val;
