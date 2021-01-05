@@ -43,12 +43,14 @@ void writecsr(int i, int32_t val){
 
 make_EHelper(system){
 	switch(decinfo.isa.instr.funct3){
-		/* ecall */
+		/* ecall & sret */
 		case 0b0:
 	    if((decinfo.isa.instr.val & ~(0x7f))==0){
 	        raise_intr(reg_l(17), decinfo.seq_pc - 4);
 	    }
 	    else if(decinfo.isa.instr.val == 0x10200073){
+	    	cpu.sstatus.SIE = cpu.sstatus.SPIE;
+	    	cpu.sstatus.SPIE = 1;
 	        decinfo.is_jmp = 1;
 	    }
 	    else{

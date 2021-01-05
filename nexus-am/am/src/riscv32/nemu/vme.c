@@ -102,6 +102,7 @@ _Context *_ucontext(_AddressSpace *as, _Area ustack, _Area kstack, void *entry, 
   memset(context, 0x00, sizeof(_Context));
   context->epc = (uint32_t)entry;
   context->as = as;
+  context->status = 0x2;
 
   return context;
 }
