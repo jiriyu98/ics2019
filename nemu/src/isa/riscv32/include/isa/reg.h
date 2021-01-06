@@ -27,21 +27,21 @@ typedef struct {
 
   union{
     struct {
-      uint32_t SD   : 1;
-      uint32_t      :11;
-      uint32_t MXR  : 1;
-      uint32_t SUM  : 1;
       uint32_t      : 1;
-      uint32_t XS   : 2;
-      uint32_t FS   : 2;
-      uint32_t      : 4;
-      uint32_t SPP  : 1;
-      uint32_t      : 2;
-      uint32_t SPIE : 1;
-      uint32_t UPIE : 1;
-      uint32_t      : 2;
       uint32_t SIE  : 1;
+      uint32_t      : 2;
+      uint32_t UPIE : 1;
+      uint32_t SPIE : 1;
+      uint32_t      : 2;
+      uint32_t SPP  : 1;
+      uint32_t      : 4;
+      uint32_t FS   : 2;
+      uint32_t XS   : 2;
       uint32_t      : 1;
+      uint32_t SUM  : 1;
+      uint32_t MXR  : 1;
+      uint32_t      :11;
+      uint32_t SD   : 1;
     };
     uint32_t val;
   } sstatus;
