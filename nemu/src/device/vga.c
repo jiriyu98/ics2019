@@ -30,11 +30,8 @@ static inline void update_screen() {
 
 static void vga_io_handler(uint32_t offset, int len, bool is_write) {
   // TODO: call `update_screen()` when writing to the sync register
-  switch (offset) {
-    case 0: assert(is_write == false); return;
-    case 4: if(is_write) update_screen(); break;
-    default:assert(0);
-  }
+  if(is_write)
+    update_screen();
 }
 
 void init_vga() {
