@@ -14,7 +14,7 @@ _Context* __am_irq_handle(_Context *c) {
       case 0x80000005:
           ev.event = _EVENT_IRQ_TIMER;
           break;
-      case -1:
+      case 0x80000001:
           ev.event = _EVENT_YIELD;
           break;
       case 0:
