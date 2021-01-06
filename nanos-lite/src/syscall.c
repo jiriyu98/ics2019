@@ -19,7 +19,6 @@ static inline int sys_read(int fd, void*buf, size_t len){
 }
 
 static inline int sys_write(int fd, const void*buf, size_t len){
-  Log("%s", buf);
     return fs_write(fd, buf, len);
 }
 
