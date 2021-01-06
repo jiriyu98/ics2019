@@ -2,10 +2,6 @@
 #include "fs.h"
 #include <elf.h>
 
-extern size_t ramdisk_read(void *, size_t, size_t);
-extern size_t ramdisk_write(const void*, size_t, size_t);
-extern void isa_vaddr_write(uint32_t, uint32_t, int);
-
 #ifdef __ISA_AM_NATIVE__
 # define Elf_Ehdr Elf64_Ehdr
 # define Elf_Phdr Elf64_Phdr
@@ -20,6 +16,8 @@ extern void isa_vaddr_write(uint32_t, uint32_t, int);
 #define OFF(va)     ((uint32_t)(va) & 0xfff)
 #define PTE_ADDR(pte)   (((uint32_t)(pte) & ~0x3ff) << 2)
 
+extern size_t fs_openoffset(int fd);
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
   int fd = fs_open(filename, 0, 0);
 
@@ -31,7 +29,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   for (size_t i = 0; i < Ehdr.e_phnum; ++i) {
     Elf_Phdr Phdr;
     fs_lseek(fd, Ehdr.e_phoff + Ehdr.e_phentsize * i, SEEK_SET);
-    fs_read(fd, (void *)&Phdr, Ehdr.e_phentsize);
+    fs_read(fd, (void *)&Phdr, sizeof(Elf_Phdr));
+    size_t opset = fs_openoffset(fd);
     if (Phdr.p_type == PT_LOAD) {
       fs_lseek(fd, Phdr.p_offset, SEEK_SET);
 
@@ -54,6 +53,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       memset((void *)(Phdr.p_vaddr + Phdr.p_filesz), 0, Phdr.p_memsz - Phdr.p_filesz);
 #endif
     }
+    fs_lseek(fd,opset,SEEK_SET);
   }
 
   fs_close(fd);

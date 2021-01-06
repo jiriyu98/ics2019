@@ -126,3 +126,7 @@ void init_fs() {
   fb = fs_open("/proc/dispinfo", 0, 0);
   file_table[fb].size = get_dispinfo_size();
 }
+
+size_t fs_openoffset(int fd){
+  return file_table[fd].open_offset;
+}
