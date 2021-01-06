@@ -11,8 +11,7 @@ _Context* __am_irq_handle(_Context *c) {
   if (user_handler) {
     _Event ev = {0};
     switch (c->cause) {
-      case -7:
-      case -5:
+      case 0x80000005:
           ev.event = _EVENT_IRQ_TIMER;
           break;
       case -1:
