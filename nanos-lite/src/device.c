@@ -1,7 +1,7 @@
 #include "common.h"
 #include <amdev.h>
 #include <am.h>
-#include <nemu.h>
+// #include <nemu.h>
 
 extern int screen_width();
 extern int screen_height();
