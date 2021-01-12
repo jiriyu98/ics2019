@@ -70,10 +70,14 @@ static inline int _printi(char **out, int num, int base, int use_upper, int sign
 static inline int _print(char **out, const char *fmt, va_list ap) {
   const char *p = fmt;
   int cnt = 0;
+  int t = 0;
   while (*p) {
     if (*p == '%') {
       p++;
-      switch (*p) {
+      LOOP:switch (*p) {
+        case 'c':
+          cnt += _printc(out, va_arg(ap, int));
+          break;
         case 'd':
           cnt += _printi(out, va_arg(ap, int), 10, 0, 1);
           break;
@@ -90,6 +94,14 @@ static inline int _print(char **out, const char *fmt, va_list ap) {
           cnt += _prints(out, va_arg(ap, char *));
           break;
         default:
+          t = 0;
+          while(*p >= '0' && *p <= '9'){
+            ++p;
+            t += 1;
+          }
+          if(t){
+            goto LOOP;
+          }
           break;
       }
     } else {
