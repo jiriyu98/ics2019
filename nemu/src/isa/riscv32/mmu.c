@@ -20,6 +20,9 @@
 //  \--- PDX(va) --/ \--- PTX(va) --/\------ OFF(va) ------/
 typedef uint32_t PTE;
 typedef uint32_t PDE;
+
+#define PAGE_SIZE         4096
+#define PAGE_MASK         (PAGE_SIZE - 1)
 #define PDX(va)     (((uint32_t)(va) >> PDXSHFT) & 0x3ff)
 #define PTX(va)     (((uint32_t)(va) >> PTXSHFT) & 0x3ff)
 #define OFF(va)     ((uint32_t)(va) & 0xfff)
@@ -44,14 +47,15 @@ static inline paddr_t page_translate(vaddr_t va) {
 
 uint32_t isa_vaddr_read(vaddr_t addr, int len) {
   if(cpu.satp.mode){
-  	if (VPN_ADDR(addr) != VPN_ADDR(addr + len - 1)) {
-      uint8_t byte[4];
-      for (int i = 0; i < len; i++)
-        byte[i] = isa_vaddr_read(addr + i, 1);
-      if (len == 2)
-        return *(uint16_t *)byte;
-      else
-        return *(uint32_t *)byte;
+  	if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
+      uint8_t byte[16];
+      int len1 = PAGE_SIZE-(addr & PAGE_MASK);
+      int len2 = len-len1;
+      paddr_t paddr1 = page_translate(addr);
+      paddr_t paddr2 = page_translate(addr+len1);
+      uint32_t data1 = paddr_read(paddr1,len1);
+      uint32_t data2 = paddr_read(paddr2,len2);
+      return (data2<<(len1<<3))|data1;
   	}else{
   	  paddr_t paddr = page_translate(addr);
       return paddr_read(paddr, len);
@@ -63,14 +67,13 @@ uint32_t isa_vaddr_read(vaddr_t addr, int len) {
 
 void isa_vaddr_write(vaddr_t addr, uint32_t data, int len) {
   if(cpu.satp.mode){
-  	if (VPN_ADDR(addr) != VPN_ADDR(addr + len - 1)) {
-      uint8_t byte[4];
-      if (len == 2)
-        *(uint16_t *)byte = data;
-      else
-        *(uint32_t *)byte = data;
-      for (int i = 0; i < len; i++)
-        isa_vaddr_write(addr + i, byte[i], 1);
+  	if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
+        int len1 = PAGE_SIZE - (addr & PAGE_MASK);
+        int len2 = len - len1;
+        paddr_t paddr1 = page_translate(addr);
+        paddr_t paddr2 = page_translate(addr+len1);
+        paddr_write(paddr1,data,len1);
+        paddr_write(paddr2,(data>>(len1<<3)),len2);
   	}else{
   	  paddr_t paddr = page_translate(addr);
       return paddr_write(paddr, data, len);
