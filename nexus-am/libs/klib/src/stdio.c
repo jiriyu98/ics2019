@@ -95,7 +95,7 @@ static inline int _print(char **out, const char *fmt, va_list ap) {
           break;
         default:
           t = 0;
-          while(*p >= 0 && *p <=9){
+          while(*p >= '0' && *p <= '9'){
             ++p;
             t += 1;
           }
