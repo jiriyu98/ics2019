@@ -75,7 +75,7 @@ static inline int _print(char **out, const char *fmt, va_list ap) {
       p++;
       switch (*p) {
         case 'c':
-          cnt += _printi(out, va_arg(ap, int), 10, 0, 1);
+          cnt += _printc(out, va_arg(ap, int));
           break;
         case 'd':
           cnt += _printi(out, va_arg(ap, int), 10, 0, 1);
