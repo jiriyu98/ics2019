@@ -48,7 +48,6 @@ static inline paddr_t page_translate(vaddr_t va) {
 uint32_t isa_vaddr_read(vaddr_t addr, int len) {
   if(cpu.satp.mode){
   	if ((addr & PAGE_MASK) + len > PAGE_SIZE) {
-      uint8_t byte[16];
       int len1 = PAGE_SIZE-(addr & PAGE_MASK);
       int len2 = len-len1;
       paddr_t paddr1 = page_translate(addr);
