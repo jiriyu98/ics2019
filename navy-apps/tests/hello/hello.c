@@ -8,7 +8,7 @@ int main() {
   while (1) {
     j ++;
     if (j == 10000) {
-      printf("Hee %dth time!\n", i ++);
+      printf("Hello World from Navy-apps for the %dth time!\n", i);
       j = 0;
     }
   }
