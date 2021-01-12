@@ -46,7 +46,6 @@ static inline int _printi(char **out, int num, int base, int use_upper, int sign
       n /= base;
     }
   } else {
-    _putc('?');
     int is_neg = 0;
     if (num < 0) {
       num = -num;
