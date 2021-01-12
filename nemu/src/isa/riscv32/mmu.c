@@ -27,6 +27,8 @@ typedef uint32_t PDE;
 // Address in page table or page directory entry
 #define PTE_ADDR(pte)   (((uint32_t)(pte) & ~0x3ff) << 2)
 
+#define VPN_ADDR(va) ((uint32_t)(va) & ~0xfff)
+
 // construct virtual address from indexes and offset
 #define PGADDR(d, t, o) ((uint32_t)((d) << PDXSHFT | (t) << PTXSHFT | (o)))
 
@@ -42,7 +44,7 @@ static inline paddr_t page_translate(vaddr_t va) {
 
 uint32_t isa_vaddr_read(vaddr_t addr, int len) {
   if(cpu.satp.mode){
-  	if (PTE_ADDR(addr) != PTE_ADDR(addr + len - 1)) {
+  	if (VPN_ADDR(addr) != VPN_ADDR(addr + len - 1)) {
       uint8_t byte[4];
       for (int i = 0; i < len; i++)
         byte[i] = isa_vaddr_read(addr + i, 1);
@@ -61,7 +63,7 @@ uint32_t isa_vaddr_read(vaddr_t addr, int len) {
 
 void isa_vaddr_write(vaddr_t addr, uint32_t data, int len) {
   if(cpu.satp.mode){
-  	if (PTE_ADDR(addr) != PTE_ADDR(addr + len - 1)) {
+  	if (VPN_ADDR(addr) != VPN_ADDR(addr + len - 1)) {
       uint8_t byte[4];
       if (len == 2)
         *(uint16_t *)byte = data;
