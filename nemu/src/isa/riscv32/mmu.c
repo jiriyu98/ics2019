@@ -36,7 +36,7 @@ typedef uint32_t PDE;
 
 static inline paddr_t page_translate(vaddr_t va) {
   paddr_t ptab = paddr_read(cpu.satp.ppn * 4096 + 4 * PDX(va), 4);
-  if(!(ptab & PTE_V)){
+  if(!(ptab & PTE_V) | (!(ptab & PTE_R) && (ptab & PTE_W))){
   	printf("PTE is invalid!\n");
   	assert(0);
   }
