@@ -74,6 +74,8 @@ static inline int _print(char **out, const char *fmt, va_list ap) {
     if (*p == '%') {
       p++;
       switch (*p) {
+        case 'c':
+          break;
         case 'd':
           cnt += _printi(out, va_arg(ap, int), 10, 0, 1);
           break;
