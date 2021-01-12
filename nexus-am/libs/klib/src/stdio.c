@@ -28,7 +28,7 @@ static inline int _prints(char **out, const char *s) {
 static inline int _printi(char **out, int num, int base, int use_upper, int sign) {
   assert(base <= 16 && base >= 2);
 
-  const int buf_sz = 51;
+  const int buf_sz = 100;
   char buf[buf_sz];
   buf[buf_sz - 1] = '\0';
   const char *dict = use_upper ? upper_dict : lower_dict;
