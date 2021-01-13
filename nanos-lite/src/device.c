@@ -1,7 +1,6 @@
 #include "common.h"
 #include <amdev.h>
 #include <am.h>
-#include <nemu.h>
 
 extern int screen_width();
 extern int screen_height();
@@ -10,8 +9,6 @@ size_t __am_input_read(uintptr_t reg, void *buf, size_t size);
 size_t __am_timer_read(uintptr_t reg, void *buf, size_t size);
 
 size_t serial_write(const void *buf, size_t offset, size_t len) {
-  _yield();
-
   for (size_t i = 0; i < len; ++i)
     _putc(((char *)buf)[i]);
   return len;
@@ -26,8 +23,6 @@ static const char *keyname[256] __attribute__((used)) = {
 };
 
 size_t events_read(void *buf, size_t offset, size_t len) {
-  _yield();
-
     int keycode = read_key();
     if(keycode != _KEY_NONE){
       if (keycode & 0x8000) {

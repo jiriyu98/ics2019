@@ -64,51 +64,46 @@ size_t fs_read(int fd, void *buf, size_t len){
   fd_check(fd);
   size_t sz;
   if (file_table[fd].read == NULL) {
-    sz = file_table[fd].open_offset + len <= file_table[fd].size ? len : file_table[fd].size - file_table[fd].open_offset;
-    sz = ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, sz);
-    file_table[fd].open_offset += sz;
-    return sz;
+    sz = (file_table[fd].open_offset + len > file_table[fd].size) ? file_table[fd].size - file_table[fd].open_offset : len;
+    ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, sz);
   } else {
-    sz = len;
-    if (file_table[fd].size && file_table[fd].open_offset + len > file_table[fd].size) {
-      sz = file_table[fd].size - file_table[fd].open_offset;
-    }
-    sz = file_table[fd].read(buf, file_table[fd].open_offset, sz);
-    file_table[fd].open_offset += sz;
-    return sz;
+    sz = file_table[fd].read(buf, file_table[fd].open_offset, len);
   }
+
+  file_table[fd].open_offset += sz; 
+  return sz;
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
   fd_check(fd);
   size_t sz;
   if (file_table[fd].write == NULL) {
-    sz = file_table[fd].open_offset + len <= file_table[fd].size ? len : file_table[fd].size - file_table[fd].open_offset;
-    sz = ramdisk_write(buf, file_table[fd].disk_offset + file_table[fd].open_offset, sz);
-    file_table[fd].open_offset += sz;
-    return sz;
+    sz = (file_table[fd].open_offset + len > file_table[fd].size) ? file_table[fd].size - file_table[fd].open_offset : len;
+    ramdisk_write(buf, file_table[fd].disk_offset + file_table[fd].open_offset, sz);
   } else {
-    sz = len;
-    if (file_table[fd].size && file_table[fd].open_offset + len > file_table[fd].size) {
-      sz = file_table[fd].size - file_table[fd].open_offset;
-    }
-    sz = file_table[fd].write(buf, file_table[fd].open_offset, sz);
-    file_table[fd].open_offset += sz;
-    return sz;
+    sz = file_table[fd].write(buf, file_table[fd].open_offset, len);
   }
+  file_table[fd].open_offset += sz;
+  return sz;
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence){
   fd_check(fd);
     switch(whence){
         case SEEK_SET:
+          if(0 <= offset && offset <= file_table[fd].size){
             file_table[fd].open_offset = offset;
-            break;
+          }
+          break;
         case SEEK_CUR:
-            file_table[fd].open_offset += offset;
+          if((offset + file_table[fd].open_offset >= 0) && (offset + file_table[fd].open_offset <= file_table[fd].size)){
+              file_table[fd].open_offset += offset;
+            }
             break;
         case SEEK_END:
-            file_table[fd].open_offset = file_table[fd].size + offset;
+            if((offset + file_table[fd].size >= 0) && (offset + file_table[fd].size <= file_table[fd].size)){
+              file_table[fd].open_offset = file_table[fd].size + offset;
+            }
             break;
         default:
           panic("lseek whence error!");
@@ -130,4 +125,8 @@ void init_fs() {
   extern size_t get_dispinfo_size();
   fb = fs_open("/proc/dispinfo", 0, 0);
   file_table[fb].size = get_dispinfo_size();
+}
+
+size_t fs_openoffset(int fd){
+  return file_table[fd].open_offset;
 }

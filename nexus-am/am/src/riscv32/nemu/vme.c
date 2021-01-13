@@ -86,12 +86,12 @@ int _map(_AddressSpace *as, void *va, void *pa, int prot) {
   PDE *pptab = &pdir[PDX(va)];
 
   if (!(*pptab & PTE_V)) {  
-    *pptab = (uint32_t)pgalloc_usr(1);
+    *pptab = (PDE *)pgalloc_usr(1);
     *pptab = ((*pptab >> 12) << 10) | PTE_V;
   }
   PDE *ptab = &(((PDE *)PTE_ADDR(*pptab))[PTX(va)]);
   if (!(*ptab & PTE_V)) { 
-    *ptab = (((uint32_t)pa >> 12) << 10) | PTE_V;
+    *ptab = (((PDE)pa >> 12) << 10) | PTE_V;
   }
 
   return 0;
@@ -102,6 +102,7 @@ _Context *_ucontext(_AddressSpace *as, _Area ustack, _Area kstack, void *entry, 
   memset(context, 0x00, sizeof(_Context));
   context->epc = (uint32_t)entry;
   context->as = as;
+  context->status = 0x2;
 
   return context;
 }

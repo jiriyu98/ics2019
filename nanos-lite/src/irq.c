@@ -4,6 +4,10 @@
 extern _Context* do_syscall(_Context*);
 static _Context* do_event(_Event e, _Context* c) {
   switch (e.event) {
+      case _EVENT_IRQ_TIMER:
+          Log("timer interrupt");
+          _yield();
+          break;
       case _EVENT_YIELD:
           // printf("Self trap!\n");
           return schedule(c);

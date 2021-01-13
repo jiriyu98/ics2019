@@ -30,6 +30,10 @@ typedef uint32_t PDE;
 // construct virtual address from indexes and offset
 #define PGADDR(d, t, o) ((uint32_t)((d) << PDXSHFT | (t) << PTXSHFT | (o)))
 
+#define PAGE_SIZE         4096
+#define PAGE_MASK         (PAGE_SIZE - 1)
+#define PG_ALIGN __attribute((aligned(PAGE_SIZE)))
+
 static inline paddr_t page_translate(vaddr_t va) {
   paddr_t ptab = paddr_read(cpu.satp.ppn * 4096 + 4 * PDX(va), 4);
   if(!(ptab & PTE_V) | (!(ptab & PTE_R) && (ptab & PTE_W))){
