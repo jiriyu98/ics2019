@@ -5,7 +5,7 @@
 
  Please note it is my own implemention. It might have bugs, and they are still waiting to be found.
 
- Alao, thanks to github, I have some references there. Hope you guys can find it helpful too.
+ Also, thanks to github, I have some references there. Hope you guys can find it helpful too.
 
  If you have any problems, please feel free to contact my by email. [jyyu@hust.edu.cn](jyyu@hust.edu.cn)
  
