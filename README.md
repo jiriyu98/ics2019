@@ -7,6 +7,6 @@
 
  Also, thanks to github, I have some references there. Hope you guys can find it helpful too.
 
- If you have any problems, please feel free to contact my by email. [jyyu@hust.edu.cn](jyyu@hust.edu.cn)
+ If you have any problems, please feel free to contact me by email.
  
- I complete PA1, PA2, PA3, PA4(half).
+ I completed PA1, PA2, PA3, PA4(half).
