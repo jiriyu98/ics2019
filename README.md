@@ -3,7 +3,7 @@
 
  This project is worked by riscv32 instruction. 
 
- Please note it is my own implemention. It might have bugs, and they are still waiting to be found.
+ Please note it is my own implementation. It might have bugs, and they are still waiting to be found.
 
  Also, thanks to github, I have some references there. Hope you guys can find it helpful too.
 
